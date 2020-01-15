@@ -1,5 +1,4 @@
 @startuml
-
 title "EdgeManager start"
 
 participant EdgeManager as EM
@@ -22,16 +21,14 @@ AM-->EM --:
 
 == Check for new proxy ==
 
-!includesub DeviceManager.puml!checkProxy
+
 opt if different proxy
 EM->AM: stop()
-!includesub ApplicationManager.puml!killAll
-!includesub DeviceManager.puml!setProxy
 end
 
 == Starting Device Manager ==
 
-!includesub DeviceManager.puml!start
+
 
 == Starting Http server ==
 
@@ -57,6 +54,4 @@ Mqtt-->EM --:
 EM->AM ++: verifyApps()
 ...
 AM-->EM --:
-
-
 @enduml
