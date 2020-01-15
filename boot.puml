@@ -1,0 +1,62 @@
+@startuml
+
+title "EdgeManager start"
+
+participant EdgeManager as EM
+database Storage as Stor
+participant DeviceManager as DM
+participant Host as Host
+participant HttpServer as Http
+participant Agent as A
+participant BootstrapService as BS
+participant Hub as Hub
+participant MqttClient as Mqtt
+participant Broker as Broker
+participant ApplicationManager as AM
+
+== Starting Application Manager ==
+
+EM->AM ++: start()
+...
+AM-->EM --:
+
+== Check for new proxy ==
+
+!includesub DeviceManager.puml!checkProxy
+opt if different proxy
+EM->AM: stop()
+!includesub ApplicationManager.puml!killAll
+!includesub DeviceManager.puml!setProxy
+end
+
+== Starting Device Manager ==
+
+!includesub DeviceManager.puml!start
+
+== Starting Http server ==
+
+EM->Http ++: start()
+Http-->EM --:
+
+== Starting Agent ==
+
+EM->A ++: [[https://google.fr start]] start()
+...
+A-->EM --:
+
+== Starting Mqtt Client ==
+
+EM->Mqtt ++: start()
+Mqtt->Stor ++: getCredential()
+Stor-->Mqtt --: credential
+Mqtt->Broker: connect()
+Mqtt-->EM --:
+
+== Verify all apps ==
+
+EM->AM ++: verifyApps()
+...
+AM-->EM --:
+
+
+@enduml
