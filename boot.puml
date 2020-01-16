@@ -1,57 +1,145 @@
-@startuml
-title "EdgeManager start"
-
-participant EdgeManager as EM
-database Storage as Stor
-participant DeviceManager as DM
-participant Host as Host
-participant HttpServer as Http
-participant Agent as A
-participant BootstrapService as BS
-participant Hub as Hub
-participant MqttClient as Mqtt
-participant Broker as Broker
 participant ApplicationManager as AM
+database Storage as Stor
+participant EdgeApplication as EApp
+participant ComposeApplication as CA
+collections ComposeService as CS
+participant DockerContainer as DCont
+participant DockerComposeProxy as DComp
+participant DockerProxy as D
 
-== Starting Application Manager ==
+@startuml AM_start.png
+title "ApplicationManager start"
 
-EM->AM ++: start()
-...
+participant ApplicationManager as AM
+database Storage as Stor
+participant EdgeApplication as EApp
+participant ComposeApplication as CA
+collections ComposeService as CS
+participant DockerContainer as DCont
+participant DockerComposeProxy as DComp
+participant DockerProxy as D
+
+== start ==
+!startsub start
+AM->Stor ++: getApps()
+Stor-->AM --: apps
+
+loop foreach app
+!includesub ApplicationManager.puml!newEdgeApplication
+end
+!endsub
+@enduml
+
+@startuml AM_newEdgeApplication.png
+title ApplicationManager new EdgeApplication
+
+== new EdgeApplication ==
+!startsub newEdgeApplication
+AM->EApp **: new(compose)
+EApp->CA **: new(compose)
+CA->DComp: getServices()
+loop foreach service
+CA->CS **: new()
+CS->DComp: subscribToEvent()
+CS->DComp: getContainerName()
+opt instanciated
+CS->DCont **: new(containerName)
+DCont->D: getId()
+DCont->D: getStatus()
+end
+end
+CA->CA: computeSelfStatus()
+!endsub
+@end
+
+@startuml AM_killALl.png
+title ApplicationManager killAll
+
+== killAll ==
+!startsub killAll
+EM->AM ++: killAll()
+loop foreach apps
+AM->AM: stop(app)
+AM->AM: remove(app)
+end
 AM-->EM --:
+!endsub
+@end
 
-== Check for new proxy ==
+@startuml AM_verifyApps.png
+title ApplicationManager verifyApps
 
+participant ApplicationManager as AM
+database Storage as Stor
+participant EdgeApplication as EApp
+participant ComposeApplication as CA
+collections ComposeService as CS
+participant DockerContainer as DCont
+participant DockerComposeProxy as DComp
+participant DockerProxy as D
 
-opt if different proxy
-EM->AM: stop()
+== verifyApps ==
+!startsub verifyApps
+loop foreach apps
+opt compose empty
+!includesub ApplicationManager.puml!downloadApp
+AM->Stor: saveApplication()
+group Construct application
+!includesub ApplicationManager.puml!newEdgeApplication
+Note over CA: May be not instanciated
+end
+!includesub ApplicationManager.puml!installApp
 end
 
-== Starting Device Manager ==
+alt desired running but not healthy
+AM->EApp: start()
+EApp->CA: start()
+CA->DComp: start()
+Note over DComp: can fail
+else desired stopped
+alt is not instanciated
+AM->EApp: create()
+EApp->CA: create()
+CA->DComp: create() / up --no-start
+else
+AM->EApp: stop()
+EApp->CA: stop()
+CA->DComp: stop()
+end
+end
+end
+!endsub
+@end
 
+@startuml AM_downloadApp.png
+title ApplicationManager downloadApp
 
+== downloadApp ==
+!startsub downloadApp
+AM->AM: downloadCompose(url)
+Note over AM: can fail
+AM->EApp ++: checkAndInterpretCompose(compose)
+EApp->CA ++: checkAndInterpretCompose(compose)
+CA->DComp: verifyCompose(compose)
+Note over DComp: can fail
+CA->DComp ++: config(compose)
+DComp-->CA --: compose
+CA-->EApp --: compose
+EApp-->AM --: compose
+!endsub
+@end
 
-== Starting Http server ==
+@startuml AM_installApp.png
+title ApplicationManager installApp
 
-EM->Http ++: start()
-Http-->EM --:
-
-== Starting Agent ==
-
-EM->A ++: [[https://google.fr start]] start()
-...
-A-->EM --:
-
-== Starting Mqtt Client ==
-
-EM->Mqtt ++: start()
-Mqtt->Stor ++: getCredential()
-Stor-->Mqtt --: credential
-Mqtt->Broker: connect()
-Mqtt-->EM --:
-
-== Verify all apps ==
-
-EM->AM ++: verifyApps()
-...
-AM-->EM --:
-@enduml
+== installApp ==
+!startsub installApp
+AM->EApp: install()
+EApp->CA: install()
+loop foreach service
+CA->CS: pull()
+CS->D: pull()
+Note over D: can fail
+end
+!endsub
+@end
