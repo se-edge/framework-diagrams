@@ -1,0 +1,30 @@
+@startuml
+skinparam componentStyle uml2
+
+[EdgeAgent] as EA
+setProxy )- [EA]
+blobUpload )- [EA]
+
+[EdgeManager] as EM
+
+
+[DeviceManager] as DM
+setProxy )- [DM]
+
+[ApplicationManager] as AM
+setProxy )- [AM]
+
+rectangle "Framework interface" {
+[HttpServer] as HS
+[HS] -- blobUpload
+
+[MqttClient] as MC
+
+}
+
+[Logateur] as LGT
+
+
+
+
+@enduml
