@@ -1,0 +1,15 @@
+@startuml
+
+title "DeviceManager checkProxy"
+
+participant DeviceManager as DM
+database Storage as Stor
+participant Host
+
+!startsub checkProxy
+DM->Stor ++: getProxy()
+Stor-->DM --: proxy
+DM->Host: readDockerConfiguration()
+!endsub
+@enduml
+

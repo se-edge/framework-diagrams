@@ -1,0 +1,28 @@
+@startuml
+title "Agent start"
+
+participant Agent as A
+database Storage as Stor
+participant BootstrapService as BS
+participant Hub as Hub
+
+!startsub start
+A->Stor ++: getProxy()
+Stor-->A --: proxy
+
+A->Stor ++: getConnectionString()
+Stor-->A --: connectionString
+
+opt No connectionString
+A->Stor ++: getBootstrapInfo()
+Stor-->A --: deviceID, genuineness, bootstrapURL
+A->BS ++: bootstrap()
+BS-->A --: connectionString
+A->Stor: saveConnectionString(connectionString)
+end
+A->Hub: connect()
+!endsub
+
+@enduml
+
+

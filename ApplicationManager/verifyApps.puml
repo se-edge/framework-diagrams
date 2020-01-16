@@ -1,0 +1,55 @@
+@startuml
+title "ApplicationManager verifyApps"
+
+participant ApplicationManager as AM
+database Storage as Stor
+participant EdgeApplication as EApp
+participant ComposeApplication as CA
+collections ComposeService as CS
+participant DockerContainer as DCont
+participant DockerComposeProxy as DComp
+participant DockerProxy as D
+
+!startsub verifyApps
+loop foreach apps
+opt compose empty
+note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/downloadApp.puml&fmt=svg downlaodApp]]
+AM->Stor: saveApplication()
+note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/newEdgeApplication.puml&fmt=svg newEdgeApplication]]
+Note over EApp: May be not instanciated
+note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/installApp.puml&fmt=svg installApp]]
+end
+
+
+alt desired running
+
+alt is not instanciated
+AM->EApp: up()
+EApp->CA: up()
+CA->DComp: up()
+Note over DComp: can fail
+
+else is not healthy
+AM->EApp: start()
+EApp->CA: start()
+CA->DComp: start()
+Note over DComp: can fail
+end
+
+else desired stopped
+alt is not instanciated
+AM->EApp: create()
+EApp->CA: create()
+CA->DComp: create() / up --no-start
+
+else is not stopped
+AM->EApp: stop()
+EApp->CA: stop()
+CA->DComp: stop()
+end
+end
+end
+!endsub
+@end
+
+@enduml

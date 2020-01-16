@@ -1,0 +1,68 @@
+@startuml
+
+title "EdgeManager start"
+
+participant EdgeManager as EM
+database Storage as Stor
+participant DeviceManager as DM
+participant Host as Host
+participant HttpServer as Http
+participant Agent as A
+participant BootstrapService as BS
+participant Hub as Hub
+participant MqttClient as Mqtt
+participant Broker as Broker
+participant ApplicationManager as AM
+
+== Starting Application Manager ==
+
+EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/start.puml&fmt=svg start()]]
+...
+AM-->EM --:
+
+== Check for new proxy ==
+EM->DM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/DeviceManager/checkProxy.puml&fmt=svg checkProxy()]]
+...
+DM-->EM --: differentProxy
+opt if different proxy
+EM->AM ++: stop()
+note over AM: TO DO
+AM-->EM --:
+EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/killAll.puml&fmt=svg killAll()]]
+...
+AM-->EM --:
+EM->DM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/DeviceManager/setProxy.puml&fmt=svg setProxy()]]
+...
+DM-->EM --:
+end
+
+== Starting Device Manager ==
+
+EM->DM ++: start()
+DM->EM --:
+
+== Starting Http server ==
+
+EM->Http ++: start()
+Http-->EM --:
+
+== Starting Agent ==
+
+EM->A ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/Agent/start.puml&fmt=svg start()]]
+...
+A-->EM --:
+
+== Starting Mqtt Client ==
+
+EM->Mqtt ++: start()
+Mqtt->Stor ++: getCredential()
+Stor-->Mqtt --: credential
+Mqtt->Broker: connect()
+Mqtt-->EM --:
+
+== Verify current apps ==
+
+EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/verifyApps.puml&fmt=svg verifyApps()]]
+...
+AM-->EM --:
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+title "ApplicationManager stop"
+
+participant ApplicationManager as AM
+database Storage as Stor
+participant EdgeApplication as EApp
+participant ComposeApplication as CA
+collections ComposeService as CS
+participant DockerContainer as DCont
+participant DockerComposeProxy as DComp
+participant DockerProxy as D
+
+!startsub killAll
+EM->AM ++: killAll()
+loop foreach apps
+AM->AM: stop(app)
+AM->AM: remove(app)
+end
+AM-->EM --:
+!endsub
+@end
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+title "ApplicationManager installApp"
+
+participant ApplicationManager as AM
+database Storage as Stor
+participant EdgeApplication as EApp
+participant ComposeApplication as CA
+collections ComposeService as CS
+participant DockerContainer as DCont
+participant DockerComposeProxy as DComp
+participant DockerProxy as D
+
+!startsub installApp
+AM->EApp: install()
+EApp->CA: install()
+loop foreach service
+CA->CS: pull()
+CS->D: pull()
+Note over D: can fail
+end
+!endsub
+@end

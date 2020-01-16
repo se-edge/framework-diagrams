@@ -1,0 +1,13 @@
+@startuml
+title ApplicationManager killAll
+
+participant ApplicationManager as AM
+
+== killAll ==
+!startsub killAll
+loop foreach apps
+AM->AM: stop(app)
+AM->AM: remove(app)
+end
+!endsub
+@enduml
