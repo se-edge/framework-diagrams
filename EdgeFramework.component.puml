@@ -1,7 +1,7 @@
 @startuml
 skinparam componentStyle uml2
 
-[EdgeAgent] as EA [[http://www.google.com]]
+[EdgeAgent] as EA [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/Agent/Agent.component.puml&fmt=svg]]
 setProxy )- [EA]
 blobUpload )- [EA]
 
