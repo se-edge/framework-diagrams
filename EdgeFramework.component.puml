@@ -11,7 +11,7 @@ blobUpload )- [EA]
 [DeviceManager] as DM [[http://www.google.com]]
 setProxy )- [DM]
 
-[ApplicationManager] as AM [[http://www.google.com]]
+[ApplicationManager] as AM [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ApplicationManager.component.puml&fmt=svg]]
 setProxy )- [AM]
 
 rectangle "Framework interface" {
