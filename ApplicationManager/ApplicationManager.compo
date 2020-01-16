@@ -1,0 +1,3 @@
+@startuml
+[Application Manager] as AM
+@enduml
