@@ -1,0 +1,3 @@
+@startuml
+[Agent] as A
+@enduml
