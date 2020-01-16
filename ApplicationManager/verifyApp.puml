@@ -1,0 +1,54 @@
+@startuml
+title "ApplicationManager verifyApp"
+
+participant ApplicationManager as AM
+database Storage as Stor
+participant EdgeApplication as EApp
+participant ComposeApplication as CA
+collections ComposeService as CS
+participant DockerContainer as DCont
+participant DockerComposeProxy as DComp
+participant DockerProxy as D
+
+!startsub verifyApp
+
+alt desired running
+    alt is not instanciated
+        AM->EApp ++: up()
+        EApp->CA ++: up()
+        CA->DComp ++: up()
+        Note over DComp: can fail
+        DComp-->CA --:
+        CA-->EApp --:
+        EApp-->AM --:
+
+    else is not healthy
+        AM->EApp ++: start()
+        EApp->CA ++: start()
+        CA->DComp ++: start()
+        Note over DComp: can fail
+        DComp-->CA --:
+        CA-->EApp --:
+        EApp-->AM --:
+    end
+else desired stopped
+    alt is not instanciated
+        AM->EApp ++: create()
+        EApp->CA ++: create()
+        CA->DComp ++: up --no-start
+        DComp-->CA --:
+        CA-->EApp --:
+        EApp-->AM --:
+
+    else is not stopped
+        AM->EApp ++: stop()
+        EApp->CA ++: stop()
+        CA->DComp ++: stop()
+        DComp-->CA --:
+        CA-->EApp --:
+        EApp-->AM --:
+    end
+end
+!endsub
+@enduml
+

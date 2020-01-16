@@ -1,6 +1,7 @@
 @startuml
 title "ApplicationManager installApp"
 
+!startsub installApp
 participant ApplicationManager as AM
 database Storage as Stor
 participant EdgeApplication as EApp
@@ -10,13 +11,29 @@ participant DockerContainer as DCont
 participant DockerComposeProxy as DComp
 participant DockerProxy as D
 
-!startsub installApp
-AM->EApp: install()
-EApp->CA: install()
-loop foreach service
-CA->CS: pull()
-CS->D: pull()
-Note over D: can fail
+note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/downloadApp.puml&fmt=svg downloadApp]]
+opt issue with compose
+    note over AM: Notify installation failed
+    AM->AM: removeDownloadedCompose()
+    note over AM: Abort
 end
+
+note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/newEdgeApplication.puml&fmt=svg newEdgeApplication]]
+Note over EApp: May be not instanciated
+
+AM->EApp ++: pull()
+EApp->CA ++: pull()
+loop foreach service
+CA->CS ++: pull()
+CS->D ++: pull()
+Note over D: can fail
+D-->CS --:
+CS-->CA --:
+end
+CA-->EApp --:
+EApp-->AM --:
+
+AM->Stor ++: saveApplication()
+Stor-->AM --:
 !endsub
-@end
+@enduml

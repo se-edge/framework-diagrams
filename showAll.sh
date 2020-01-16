@@ -43,7 +43,7 @@ done
 
 createHtml() {
     puml=$1.puml
-    java -jar /var/lib/gems/2.5.0/gems/asciidoctor-diagram-2.0.1/lib/plantuml.jar output/$1.puml
+    java -DPLANTUML_LIMIT_SIZE=16384 -jar /var/lib/gems/2.5.0/gems/asciidoctor-diagram-2.0.1/lib/plantuml.jar output/$1.puml
 
     echo "<img src=\"$1.png\" usemap=\"#${1}_map\" />" > output/$1.html
 

@@ -1,0 +1,35 @@
+@startuml
+title "ApplicationManager verifyDesiredApps"
+
+!startsub verifyDesiredApps
+participant ApplicationManager as AM
+database Storage as Stor
+participant EdgeApplication as EApp
+participant ComposeApplication as CA
+collections ComposeService as CS
+participant DockerContainer as DCont
+participant DockerComposeProxy as DComp
+participant DockerProxy as D
+
+AM->Stor ++: getDesiredApps()
+Stor-->AM --: desiredApps
+loop foreach apps
+    alt instance not present
+        note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/installApp.puml&fmt=svg installApp()]]
+        note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/verifyApp.puml&fmt=svg verifyApp()]]
+
+    else desired version different than current instance version
+        note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/updateApp.puml&fmt=svg updateApp()]]
+
+    else desired state different than saved desired state
+        AM->EApp ++: update()
+        EApp->EApp: updateSelfProperties()
+        EApp-->AM --:
+        AM->Stor ++: saveApplication()
+        Stor-->AM --:
+        note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/verifyApp.puml&fmt=svg verifyApp()]]
+    end
+end
+
+!endsub
+@enduml

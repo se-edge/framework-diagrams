@@ -1,0 +1,42 @@
+@startuml
+
+title "ApplicationManager"
+
+class ApplicationManager
+class EdgeApplication {
+    String name
+    String version
+    String appId
+    String instanceId
+    String serviceHealthCheck
+}
+class ComposeApplication {
+    String compose
+    String projectName = instanceId
+}
+class ComposeService {
+    String name
+    String image
+}
+class DockerContainer {
+    String id
+    String name
+}
+class Volume {
+    String name
+    String target
+}
+
+class Status
+class DesiredStatus
+
+ApplicationManager *-- "*"EdgeApplication
+EdgeApplication *-- DesiredStatus
+EdgeApplication *-- ComposeApplication
+EdgeApplication *-- Status
+ComposeApplication *-- "*" ComposeService
+ComposeService *-- "*" Volume
+ComposeService o-- DockerContainer
+ComposeService *-- Status
+
+@enduml
