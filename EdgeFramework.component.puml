@@ -1,28 +1,28 @@
 @startuml
 skinparam componentStyle uml2
 
-[EdgeAgent] as EA
+[EdgeAgent] as EA [[http://www.google.com]]
 setProxy )- [EA]
 blobUpload )- [EA]
 
-[EdgeManager] as EM
+[EdgeManager] as EM [[http://www.google.com]]
 
 
-[DeviceManager] as DM
+[DeviceManager] as DM [[http://www.google.com]]
 setProxy )- [DM]
 
-[ApplicationManager] as AM
+[ApplicationManager] as AM [[http://www.google.com]]
 setProxy )- [AM]
 
 rectangle "Framework interface" {
-[HttpServer] as HS
+[HttpServer] as HS [[http://www.google.com]]
 [HS] -- blobUpload
 
-[MqttClient] as MC
+[MqttClient] as MC [[http://www.google.com]]
 
 }
 
-[Logateur] as LGT
+[Logateur] as LGT [[http://www.google.com]]
 
 
 
