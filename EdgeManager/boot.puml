@@ -36,6 +36,18 @@ EM->DM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.git
 DM-->EM --:
 end
 
+== Verify current apps ==
+
+EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/verifyCurrentApps.puml&fmt=svg verifyCurrentApps()]]
+...
+AM-->EM --:
+
+== Verify desired apps ==
+
+EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/verifyDesiredApps.puml&fmt=svg verifyDesiredApps()]]
+...
+AM-->EM --:
+
 == Starting Device Manager ==
 
 EM->DM ++: start()
@@ -60,15 +72,4 @@ Stor-->Mqtt --: credential
 Mqtt->Broker: connect()
 Mqtt-->EM --:
 
-== Verify current apps ==
-
-EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/verifyCurrentApps.puml&fmt=svg verifyCurrentApps()]]
-...
-AM-->EM --:
-
-== Verify desired apps ==
-
-EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/verifyDesiredApps.puml&fmt=svg verifyDesiredApps()]]
-...
-AM-->EM --:
 @enduml
