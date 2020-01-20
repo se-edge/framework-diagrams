@@ -2,21 +2,18 @@
 
 title "ApplicationManager start"
 
-!startsub start
 participant ApplicationManager as AM
 database Storage as Stor
 participant EdgeApplication as EApp
-participant ComposeApplication as CA
-collections ComposeService as CS
-participant DockerContainer as DCont
-participant DockerComposeProxy as DComp
-participant DockerProxy as D
 
+[->AM: start
+!startsub start
 AM->Stor ++: getReportedApps()
 Stor-->AM --: apps
 
 loop foreach app
-note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/newEdgeApplication.puml&fmt=svg newEdgeApplication]]
+AM->EApp **: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.new.puml&fmt=svg new()]]
 end
 !endsub
+AM-->[:
 @enduml

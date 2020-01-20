@@ -25,9 +25,6 @@ EM->DM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.git
 ...
 DM-->EM --: differentProxy
 opt if different proxy
-EM->AM ++: stop()
-note over AM: TO DO
-AM-->EM --:
 EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/killAll.puml&fmt=svg killAll()]]
 ...
 AM-->EM --:
@@ -42,9 +39,9 @@ EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.git
 ...
 AM-->EM --:
 
-== Verify desired apps ==
+== Verify saved desired apps ==
 
-EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/verifyDesiredApps.puml&fmt=svg verifyDesiredApps()]]
+EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/verifySavedDesiredApps.puml&fmt=svg verifySavedDesiredApps()]]
 ...
 AM-->EM --:
 

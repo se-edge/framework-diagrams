@@ -1,39 +1,25 @@
 @startuml
 title "ApplicationManager installApp"
 
-!startsub installApp
 participant ApplicationManager as AM
 database Storage as Stor
+participant EdgeAppFactory as EAF
 participant EdgeApplication as EApp
-participant ComposeApplication as CA
-collections ComposeService as CS
-participant DockerContainer as DCont
-participant DockerComposeProxy as DComp
-participant DockerProxy as D
 
-note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/downloadApp.puml&fmt=svg downloadApp]]
-opt issue with compose
-    note over AM: Notify installation failed
-    AM->AM: removeDownloadedCompose()
-    note over AM: Abort
-end
+[->AM: installApp(json)
+!startsub installApp
 
-note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/newEdgeApplication.puml&fmt=svg newEdgeApplication]]
-Note over EApp: May be not instanciated
+AM->EAF ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/EdgeAppFactory.install.puml&fmt=svg install(json)]]
+EAF-->AM --: EdgeApp
 
-AM->EApp ++: pull()
-EApp->CA ++: pull()
-loop foreach service
-CA->CS ++: pull()
-CS->D ++: pull()
-Note over D: can fail
-D-->CS --:
-CS-->CA --:
-end
-CA-->EApp --:
+AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.downloadApp.puml&fmt=svg downloadApp()]]
 EApp-->AM --:
 
 AM->Stor ++: saveApplication()
 Stor-->AM --:
+
+AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.verify.puml&fmt=svg verify()]]
+EApp-->AM --:
 !endsub
+AM-->[: EdgeApp
 @enduml

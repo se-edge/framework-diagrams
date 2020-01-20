@@ -1,0 +1,31 @@
+@startuml
+
+title "ComposeApplication new"
+
+participant ComposeApplication as CA
+collections ComposeService as CS
+participant DockerContainer as DCont
+participant DockerComposeProxy as DComp
+participant DockerProxy as D
+
+[->CA: new()
+!startsub new
+CA->DComp ++: getServices()
+DComp-->CA --:
+loop foreach service
+    CA->CS **: new()
+    CS->DComp: subscribToEvent()
+    CS->DComp ++: getContainerName()
+    DComp-->CS --:
+    opt instanciated
+        CS->DCont **: new(containerName)
+        DCont->D ++: getId()
+        D-->DCont --:
+        DCont->D ++: getStatus()
+        D-->DCont --:
+    end
+end
+CA->CA: computeSelfStatus()
+!endsub
+@enduml
+

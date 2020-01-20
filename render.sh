@@ -35,7 +35,7 @@ do
             if [[ $line == "note "* ]]
             then
                 echo "$before[[file://$PWD/outputLocal/${component}_$fnct.svg $after]]" >> $outputLocalFile
-                #echo $line >> $outputBigFile
+                echo $line >> $outputBigFile
             else
                 echo "$before[[file://$PWD/outputLocal/${component}_$fnct.svg $after]]" >> $outputLocalFile
                 echo $line >> $outputBigFile

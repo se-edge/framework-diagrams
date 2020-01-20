@@ -1,0 +1,18 @@
+@startuml
+title "ComposeApplication create"
+
+participant ComposeApplication as CA
+participant DockerComposeProxy as DComp
+
+[->CA: create()
+!startsub create
+
+CA->DComp ++: create()
+note over DComp : up ~--remove-orphans --no-start
+DComp-->CA --:
+
+!endsub
+CA-->[:
+@enduml
+
+

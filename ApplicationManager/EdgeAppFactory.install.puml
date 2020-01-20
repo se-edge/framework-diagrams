@@ -1,0 +1,33 @@
+@startuml
+title "EdgeAppFactory install"
+
+participant EdgeAppFactory as EAF
+participant cloud
+participant EdgeApplication as EApp
+
+[->EAF: install(json)
+!startsub install
+EAF->EApp ++: downloadDescription()
+
+EApp->cloud: downloadDescription()
+EApp->EApp: checkCertificate()
+EApp->EApp: checkIntegrity()
+
+EApp-->EAF --:
+
+EAF->EAF: whoAmI()
+EAF->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.interpret.puml&fmt=svg interpret(description)]]
+
+EApp-->EAF --: description
+
+opt issue with description
+    EAF->EAF: removeDownloadedCompose()
+    note over EAF: Notify installation failed and abort
+end
+
+EAF->EApp **: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.new.puml&fmt=svg new(description)]]
+EApp-->EAF --:
+!endsub
+EAF-->[: EdgeApp
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+title "ComposeApplication verify"
+
+participant ComposeApplication as CA
+participant DockerComposeProxy as DComp
+
+[->CA: verify()
+!startsub verify
+
+alt desired running
+    alt is not instanciated
+        CA->DComp ++: up() --remove-orphans
+        DComp-->CA --:
+
+    else is not healthy
+        CA->DComp ++: start()
+        DComp-->CA --:
+    end
+else desired stopped
+    alt is not instanciated
+        CA->DComp ++: create()
+        note over DComp : up --no-start
+        DComp-->CA --:
+
+    else is not stopped
+        CA->DComp ++: stop()
+        DComp-->CA --:
+    end
+end
+!endsub
+CA-->[:
+@enduml
+

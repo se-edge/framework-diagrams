@@ -1,0 +1,16 @@
+@startuml
+title "ComposeApplication interpret"
+
+participant ComposeApplication as CA
+participant DockerComposeProxy as DComp
+
+[->CA: interpret(compose)
+!startsub interpret
+CA->DComp ++: verifyCompose(compose)
+DComp-->CA --: accepted
+Note over DComp: can fail
+CA->DComp ++: config(compose)
+DComp-->CA --: compose
+!endsub
+CA-->[: compose
+@end

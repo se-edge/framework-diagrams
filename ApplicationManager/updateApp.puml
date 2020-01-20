@@ -1,71 +1,42 @@
 @startuml
 title "ApplicationManager updateApp"
 
-!startsub updateApp
 participant ApplicationManager as AM
 database Storage as Stor
+participant EdgeAppFactory as EAF
 participant EdgeApplication as EApp
-participant ComposeApplication as CA
-collections ComposeService as CS
-participant DockerContainer as DCont
-participant DockerComposeProxy as DComp
-participant DockerProxy as D
 
-note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/downloadApp.puml&fmt=svg downloadApp()]]
+[->AM: updateApp()
+!startsub updateApp
 
-opt issue with compose
-    note over AM: Notify installation failed
-    AM->AM: removeDownloadedCompose()
-    note over AM: Abort
-end
+note over AM: We may need to check if application allready installed
+AM->EAF ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/EdgeAppFactory.install.puml&fmt=svg install(json)]]
+EAF-->AM --: EdgeApp
 
-AM->EApp ++: pull()
-EApp->CA ++: pull()
-loop foreach service
-    CA->CS ++: pull()
-    CS->D ++: pull()
-    Note over D: can fail
-    D-->CS --:
-    CS-->CA --:
-end
-CA-->EApp --:
+AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.downloadApp.puml&fmt=svg downloadApp()]]
 EApp-->AM --:
 
 opt old app is running (to be defined)
-    AM->EApp ++: stop()
-    EApp->CA ++: stop()
-    CA->DComp ++: stop()
-    DComp-->CA --:
-    CA-->EApp --:
+    AM->EApp ++: oldApp.stop()
     EApp-->AM --:
 end
 
-AM->EApp ++: update()
-EApp->EApp: updateSelfProperties()
-EApp-->AM --:
 
 AM->Stor ++: saveApplication()
 Stor-->AM --:
 
+note over AM: TODO
+
 alt desired running
-    note over AM, DComp: Do not use verifyApp here because we need to do up and not start
-    AM->EApp ++: up()
-    EApp->CA ++: up()
-    CA->DComp ++: up() --remove-orphans
-    note over DComp: Docker-compose may remove olds container and unused one with this option
-    note over DComp: can fail
-    DComp-->CA --:
-    CA-->EApp --:
+    note over AM: Do not use verify here because we need to do up and not start
+    AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.up.puml&fmt=svg up()]]
     EApp-->AM --:
 else desired stopped
-    AM->EApp ++: create()
-    EApp->CA ++: create()
-    CA->DComp ++: up --no-start
-    DComp-->CA --:
-    CA-->EApp --:
+    AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.create.puml&fmt=svg create()]]
     EApp-->AM --:
 end
 
 !endsub
+AM-->[:
 @enduml
 

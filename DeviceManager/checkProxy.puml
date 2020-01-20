@@ -6,10 +6,12 @@ participant DeviceManager as DM
 database Storage as Stor
 participant Host
 
+[->DM: checkProxy()
 !startsub checkProxy
 DM->Stor ++: getProxy()
 Stor-->DM --: proxy
 DM->Host: readDockerConfiguration()
 !endsub
+[<--DM: differentProxy
 @enduml
 

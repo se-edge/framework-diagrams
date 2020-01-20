@@ -2,12 +2,13 @@
 title ApplicationManager killAll
 
 participant ApplicationManager as AM
+participant EdgeApplication as EApp
 
-== killAll ==
+[->AM: killAll()
 !startsub killAll
-loop foreach apps
-AM->AM: stop(app)
-AM->AM: remove(app)
+loop foreach app
+AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.kill.puml&fmt=svg kill()]]
+EApp-->AM --:
 end
 !endsub
 @enduml
