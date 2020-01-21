@@ -5,10 +5,10 @@ title "DeviceManager setProxy"
 participant DeviceManager as DM
 participant Host
 
-!startsub setProxy
+
 DM->Host: writeDockerConfiguration()
 DM->Host: restartDocker()
 Note over DM: Here, all containers will stop, EdgeManager included
-!endsub
+
 @enduml
 

@@ -7,7 +7,7 @@ participant EdgeAppFactory as EAF
 participant EdgeApplication as EApp
 
 [->AM: updateApp()
-!startsub updateApp
+
 
 note over AM: We may need to check if application allready installed
 AM->EAF ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/EdgeAppFactory.install.puml&fmt=svg install(json)]]
@@ -36,7 +36,7 @@ else desired stopped
     EApp-->AM --:
 end
 
-!endsub
+
 AM-->[:
 @enduml
 

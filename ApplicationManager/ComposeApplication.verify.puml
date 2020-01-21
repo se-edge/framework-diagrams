@@ -5,7 +5,7 @@ participant ComposeApplication as CA
 participant DockerComposeProxy as DComp
 
 [->CA: verify()
-!startsub verify
+
 
 alt desired running
     alt is not instanciated
@@ -27,7 +27,7 @@ else desired stopped
         DComp-->CA --:
     end
 end
-!endsub
+
 CA-->[:
 @enduml
 

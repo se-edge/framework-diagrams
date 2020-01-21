@@ -9,7 +9,7 @@ participant DockerComposeProxy as DComp
 participant DockerProxy as D
 
 [->CA: new()
-!startsub new
+
 CA->DComp ++: getServices()
 DComp-->CA --:
 loop foreach service
@@ -26,6 +26,6 @@ loop foreach service
     end
 end
 CA->CA: computeSelfStatus()
-!endsub
+
 @enduml
 

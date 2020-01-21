@@ -6,7 +6,7 @@ participant cloud
 participant EdgeApplication as EApp
 
 [->EAF: install(json)
-!startsub install
+
 EAF->EApp ++: downloadDescription()
 
 EApp->cloud: downloadDescription()
@@ -27,7 +27,7 @@ end
 
 EAF->EApp **: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.new.puml&fmt=svg new(description)]]
 EApp-->EAF --:
-!endsub
+
 EAF-->[: EdgeApp
 
 @enduml

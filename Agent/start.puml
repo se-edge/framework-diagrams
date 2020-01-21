@@ -6,7 +6,7 @@ database Storage as Stor
 participant BootstrapService as BS
 participant Hub as Hub
 
-!startsub start
+
 A->Stor ++: getProxy()
 Stor-->A --: proxy
 
@@ -21,7 +21,7 @@ BS-->A --: connectionString
 A->Stor: saveConnectionString(connectionString)
 end
 A->Hub: connect()
-!endsub
+
 
 @enduml
 

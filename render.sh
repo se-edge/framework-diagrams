@@ -32,21 +32,15 @@ do
             puml=$(echo $url | sed 's#http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/\(.*\)/\(.*\)&.*#\2#')
             fnct=$(echo $puml | sed 's/\(.*\)\.puml/\1/')
 
-            if [[ $line == "note "* ]]
-            then
-                echo "$before[[file://$PWD/outputLocal/${component}_$fnct.svg $after]]" >> $outputLocalFile
-                echo $line >> $outputBigFile
-            else
-                echo "$before[[file://$PWD/outputLocal/${component}_$fnct.svg $after]]" >> $outputLocalFile
-                echo $line >> $outputBigFile
-                #echo $before $after >> $outputBigFile
-            fi
-            echo "!includesub ${component}_$puml!${fnct#*.}" >> $outputBigFile
-        elif [[ $line != "..." ]]
-        then
+            echo "$before[[file://$PWD/outputLocal/${component}_$fnct.svg $after]]" >> $outputLocalFile
+
             echo $line >> $outputBigFile
+            echo "!include ${component}_$puml" >> $outputBigFile
+        elif [[ $line == '[-'* || $line == *'-->['* || $line == "..."* ]]
+        then
             echo $line >> $outputLocalFile
         else
+            echo $line >> $outputBigFile
             echo $line >> $outputLocalFile
         fi
     done < $file

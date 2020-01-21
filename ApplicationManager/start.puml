@@ -7,13 +7,13 @@ database Storage as Stor
 participant EdgeApplication as EApp
 
 [->AM: start
-!startsub start
+
 AM->Stor ++: getReportedApps()
 Stor-->AM --: apps
 
 loop foreach app
 AM->EApp **: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.new.puml&fmt=svg new()]]
 end
-!endsub
+
 AM-->[:
 @enduml

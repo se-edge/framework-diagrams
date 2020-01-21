@@ -5,10 +5,10 @@ participant ApplicationManager as AM
 participant EdgeApplication as EApp
 
 [->AM: killAll()
-!startsub killAll
+
 loop foreach app
 AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.kill.puml&fmt=svg kill()]]
 EApp-->AM --:
 end
-!endsub
+
 @enduml

@@ -3,16 +3,13 @@
 title "EdgeManager start"
 
 participant EdgeManager as EM
-database Storage as Stor
+participant ApplicationManager as AM
 participant DeviceManager as DM
-participant Host as Host
 participant HttpServer as Http
 participant Agent as A
-participant BootstrapService as BS
-participant Hub as Hub
 participant MqttClient as Mqtt
 participant Broker as Broker
-participant ApplicationManager as AM
+database Storage as Stor
 
 == Starting Application Manager ==
 

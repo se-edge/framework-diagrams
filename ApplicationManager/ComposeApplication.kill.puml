@@ -5,7 +5,7 @@ participant ComposeApplication as CA
 participant DockerComposeProxy as DComp
 
 [->CA: kill()
-!startsub kill
+
 opt is running
 CA->DComp ++: stop()
 DComp-->CA --:
@@ -15,6 +15,6 @@ opt is instanciated
 CA->DComp ++: rm()
 DComp-->CA --:
 end
-!endsub
+
 @enduml
 

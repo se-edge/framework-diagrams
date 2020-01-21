@@ -6,13 +6,13 @@ database Storage as Stor
 participant EdgeApplication as EApp
 
 [->AM: verifySavedDesiredApps()
-!startsub verifySavedDesiredApps
+
 AM->Stor ++: getDesiredApps()
 Stor-->AM --: desiredApps
 loop foreach desired app
     note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/applyDesired.puml&fmt=svg applyDesired()]]
 end
 
-!endsub
+
 AM-->[:
 @enduml

@@ -6,7 +6,7 @@ collections ComposeService as CS
 participant DockerProxy as D
 
 [->CA: downloadApp()
-!startsub downloadApp
+
 
 loop foreach service
 CA->CS ++: pull()
@@ -15,7 +15,7 @@ Note over D: can fail
 D-->CS --:
 CS-->CA --:
 end
-!endsub
+
 CA-->[:
 @enduml
 

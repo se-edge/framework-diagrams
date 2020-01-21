@@ -6,7 +6,7 @@ database Storage as Stor
 participant EdgeApplication as EApp
 
 [->AM: applyDesired()
-!startsub applyDesired
+
 alt instance not present
     note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/installApp.puml&fmt=svg EdgeApp : installApp(json)]]
 
@@ -21,6 +21,6 @@ else desired state different than saved desired state
     AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.verify.puml&fmt=svg verify()]]
     EApp-->AM --:
 end
-!endsub
+
 AM-->[:
 @enduml
