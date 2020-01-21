@@ -3,7 +3,6 @@ title "Agent start"
 
 participant Agent as A
 database Storage as Stor
-participant BootstrapService as BS
 participant Hub as Hub
 
 
@@ -14,14 +13,10 @@ A->Stor ++: getConnectionString()
 Stor-->A --: connectionString
 
 opt No connectionString
-A->Stor ++: getBootstrapInfo()
-Stor-->A --: deviceID, genuineness, bootstrapURL
-A->BS ++: bootstrap()
-BS-->A --: connectionString
-A->Stor: saveConnectionString(connectionString)
+
+note over A : [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/Agent/bootstrap.puml&fmt=svg bootstrap()]]
 end
 A->Hub: connect()
-
 
 @enduml
 

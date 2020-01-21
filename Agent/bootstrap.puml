@@ -1,0 +1,18 @@
+@startuml
+title "Agent bootstrap"
+
+participant Agent as A
+participant BootstrapService as BS
+
+[-->A: bootstrap()
+A->Stor ++: getBootstrapInfo()
+Stor-->A --: deviceID, genuineness, bootstrapURL
+A->BS ++: bootstrap()
+BS-->A --: connectionString
+A->Stor: saveConnectionString(connectionString)
+A-->[: connectionString
+
+@enduml
+
+
+
