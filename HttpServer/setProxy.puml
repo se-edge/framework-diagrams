@@ -1,0 +1,20 @@
+@startuml
+
+title "HttpServer setProxy"
+
+actor User
+participant HttpServer as Http
+participant EdgeManager as EM
+database Storage as Stor
+
+User->Http ++: setProxy()
+
+Http->Stor ++: saveProxy()
+Stor-->Http --:
+
+Http->EM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/EdgeManager/checkProxy.puml&fmt=svg checkProxy()]]
+EM-->Http --:
+
+Http-->User --:
+
+@enduml

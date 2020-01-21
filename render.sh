@@ -54,5 +54,6 @@ createHtml() {
 createHtml EdgeManager_boot
 createHtml ApplicationManager_installApp
 createHtml ApplicationManager_updateApp
+createHtml HttpServer_setProxy
 
 java -DPLANTUML_LIMIT_SIZE=16384 -jar /var/lib/gems/2.5.0/gems/asciidoctor-diagram-2.0.1/lib/plantuml.jar -tsvg outputLocal/*.puml

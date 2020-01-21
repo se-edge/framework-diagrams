@@ -1,0 +1,41 @@
+@startuml
+
+title "EdgeManager checkProxy"
+
+participant EdgeManager as EM
+participant ApplicationManager as AM
+participant DeviceManager as DM
+participant HttpServer as Http
+participant Agent as A
+participant MqttClient as Mqtt
+
+[->EM: checkProxy()
+
+EM->DM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/DeviceManager/checkProxy.puml&fmt=svg checkProxy()]]
+DM-->EM --: differentProxy
+
+opt if different proxy
+    EM->A ++: stop()
+    A-->EM --:
+
+    EM->DM ++: stop()
+    DM-->EM --:
+
+    EM->Http ++: stop()
+    Http-->EM --:
+
+    EM->Mqtt ++: stop()
+    Mqtt-->EM --:
+
+    EM->AM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/killAll.puml&fmt=svg killAll()]]
+    AM-->EM --:
+
+    EM->AM ++: stop()
+    AM-->EM --:
+
+    EM->DM ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/DeviceManager/setProxy.puml&fmt=svg setProxy()]]
+    DM-->EM --:
+end
+
+EM-->[:
+@enduml
