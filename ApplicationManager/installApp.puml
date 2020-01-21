@@ -8,15 +8,12 @@ participant EdgeApplication as EApp
 
 [->AM: installApp(json)
 
-
 AM->EAF ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/EdgeAppFactory.install.puml&fmt=svg install(json)]]
 EAF-->AM --: EdgeApp
 
-AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.downloadApp.puml&fmt=svg downloadApp()]]
-EApp-->AM --:
-
 AM->Stor ++: saveApplication()
 Stor-->AM --:
+
 
 AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.verify.puml&fmt=svg verify()]]
 EApp-->AM --:

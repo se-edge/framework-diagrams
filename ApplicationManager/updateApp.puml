@@ -8,13 +8,8 @@ participant EdgeApplication as EApp
 
 [->AM: updateApp()
 
-
-note over AM: We may need to check if application allready installed
 AM->EAF ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/EdgeAppFactory.install.puml&fmt=svg install(json)]]
 EAF-->AM --: EdgeApp
-
-AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.downloadApp.puml&fmt=svg downloadApp()]]
-EApp-->AM --:
 
 opt old app is running (to be defined)
     AM->EApp ++: oldApp.stop()
@@ -22,13 +17,19 @@ opt old app is running (to be defined)
 end
 
 
-AM->Stor ++: saveApplication()
+AM->Stor ++: removeApplication(old)
 Stor-->AM --:
 
-note over AM: TODO
+AM->Stor ++: saveApplication(new)
+Stor-->AM --:
 
+note over AM, EApp
+    Do not use //verif//y here.
+    Docker container may be instanciated and stopped. //verify// function will call //start// or //stop//.
+    But we need to call //up// or //create// in order to instanciate new container.
+end note
 alt desired running
-    note over AM: Do not use verify here because we need to do up and not start
+
     AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.up.puml&fmt=svg up()]]
     EApp-->AM --:
 else desired stopped

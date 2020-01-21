@@ -1,0 +1,17 @@
+@startuml
+
+title "ComposeApplication remove"
+
+participant ComposeApplication as CA
+participant DockerComposeProxy as DComp
+
+[->CA: remove()
+CA->DComp ++: stop()
+DComp-->CA --:
+
+CA->DComp ++: rm()
+note over DComp: rm ~--stop ~--force
+DComp-->CA --:
+CA-->[:
+
+@enduml

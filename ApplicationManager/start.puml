@@ -8,7 +8,7 @@ participant EdgeApplication as EApp
 
 [->AM: start
 
-AM->Stor ++: getReportedApps()
+AM->Stor ++: getInstalledApps()
 Stor-->AM --: apps
 
 loop foreach app

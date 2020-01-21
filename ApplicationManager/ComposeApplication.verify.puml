@@ -9,8 +9,7 @@ participant DockerComposeProxy as DComp
 
 alt desired running
     alt is not instanciated
-        CA->DComp ++: up() --remove-orphans
-        DComp-->CA --:
+        note over CA: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.up.puml&fmt=svg up()]]
 
     else is not healthy
         CA->DComp ++: start()
@@ -18,9 +17,7 @@ alt desired running
     end
 else desired stopped
     alt is not instanciated
-        CA->DComp ++: create()
-        note over DComp : up --no-start
-        DComp-->CA --:
+        note over CA: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.create.puml&fmt=svg create()]]
 
     else is not stopped
         CA->DComp ++: stop()
