@@ -2,12 +2,7 @@
 
 title "EdgeManager checkProxy"
 
-participant EdgeManager as EM
-participant ApplicationManager as AM
-participant DeviceManager as DM
-participant HttpServer as Http
-participant Agent as A
-participant MqttClient as Mqtt
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 [->EM: checkProxy()
 

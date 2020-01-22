@@ -6,8 +6,14 @@ do
     then
         continue
     fi
-    outputBigFile=output/$(basename $(dirname $file))_$(basename $file)
-    outputLocalFile=outputLocal/$(basename $(dirname $file))_$(basename $file)
+    if [[ $(basename $(dirname $file)) == "." ]]
+    then
+        outputBigFile=output/$(basename $file)
+        outputLocalFile=outputLocal/$(basename $file)
+    else
+        outputBigFile=output/$(basename $(dirname $file))_$(basename $file)
+        outputLocalFile=outputLocal/$(basename $(dirname $file))_$(basename $file)
+    fi
 
     if [[ ! -d output ]]
     then
@@ -35,7 +41,15 @@ do
             echo "$before[[file://$PWD/outputLocal/${component}_$fnct.svg $after]]" >> $outputLocalFile
 
             echo $line >> $outputBigFile
-            echo "!include ${component}_$puml" >> $outputBigFile
+            if [[ $puml != *"ComposeApplication"* ]]
+            then
+                echo "!include ${component}_$puml" >> $outputBigFile
+            fi
+        elif [[ $line == "!include https://raw.githubusercontent.com/se-edge/diagrams/develop/"* ]]
+        then
+            file=${line#"!include https://raw.githubusercontent.com/se-edge/diagrams/develop/"}
+            echo "!include $file" >> $outputBigFile
+            echo "!include $file" >> $outputLocalFile
         elif [[ $line == '[-'* || $line == *'-->['* || $line == "..."* ]]
         then
             echo $line >> $outputLocalFile
@@ -54,6 +68,7 @@ createHtml() {
 createHtml EdgeManager_boot
 createHtml ApplicationManager_installApp
 createHtml ApplicationManager_updateApp
+createHtml ApplicationManager_removeApp
 createHtml HttpServer_setProxy
 
 java -DPLANTUML_LIMIT_SIZE=16384 -jar /var/lib/gems/2.5.0/gems/asciidoctor-diagram-2.0.1/lib/plantuml.jar -tsvg outputLocal/*.puml

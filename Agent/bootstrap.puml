@@ -1,8 +1,7 @@
 @startuml
 title "Agent bootstrap"
 
-participant Agent as A
-participant BootstrapService as BS
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 [-->A: bootstrap()
 A->Stor ++: getBootstrapInfo()

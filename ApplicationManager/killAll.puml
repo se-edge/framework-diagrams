@@ -1,14 +1,13 @@
 @startuml
 title ApplicationManager killAll
 
-participant ApplicationManager as AM
-participant EdgeApplication as EApp
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 [->AM: killAll()
 
 loop foreach app
-AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.kill.puml&fmt=svg kill()]]
-EApp-->AM --:
+    AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.kill.puml&fmt=svg kill()]]
+    EApp-->AM --:
 end
 
 @enduml

@@ -1,11 +1,9 @@
 @startuml
 title "ComposeApplication verify"
 
-participant ComposeApplication as CA
-participant DockerComposeProxy as DComp
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 [->CA: verify()
-
 
 alt desired running
     alt is not instanciated

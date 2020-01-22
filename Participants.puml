@@ -1,0 +1,31 @@
+@startuml
+
+actor User
+
+participant EdgeManager as EM
+
+participant ApplicationManager as AM
+participant EdgeAppFactory as EAF
+participant EdgeApplication as EApp
+participant ComposeApplication as CA
+collections ComposeService as CS
+participant DockerContainer as DCont
+participant DockerComposeProxy as DComp
+participant DockerProxy as D
+
+participant DeviceManager as DM
+participant Agent as A
+participant HttpServer as Http
+participant MqttClient as Mqtt
+participant Broker as Broker
+
+database Storage as Stor
+participant Host
+
+participant BootstrapService as BS
+participant Hub as Hub
+participant cloud
+
+hide unlinked
+
+@enduml

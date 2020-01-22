@@ -2,9 +2,7 @@
 
 title "DeviceManager setProxy"
 
-participant DeviceManager as DM
-participant Host
-
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 DM->Host: writeDockerConfiguration()
 DM->Host: restartDocker()

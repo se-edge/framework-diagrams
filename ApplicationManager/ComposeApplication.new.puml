@@ -2,11 +2,7 @@
 
 title "ComposeApplication new"
 
-participant ComposeApplication as CA
-collections ComposeService as CS
-participant DockerContainer as DCont
-participant DockerComposeProxy as DComp
-participant DockerProxy as D
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 [->CA: new()
 

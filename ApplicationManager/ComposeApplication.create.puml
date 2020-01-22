@@ -1,16 +1,13 @@
 @startuml
 title "ComposeApplication create"
 
-participant ComposeApplication as CA
-participant DockerComposeProxy as DComp
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 [->CA: create()
-
 
 CA->DComp ++: create()
 note over DComp : up ~--remove-orphans --no-start
 DComp-->CA --:
-
 
 CA-->[:
 @enduml

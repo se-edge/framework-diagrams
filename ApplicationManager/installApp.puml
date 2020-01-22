@@ -1,10 +1,7 @@
 @startuml
 title "ApplicationManager installApp"
 
-participant ApplicationManager as AM
-database Storage as Stor
-participant EdgeAppFactory as EAF
-participant EdgeApplication as EApp
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 [->AM: installApp(json)
 
@@ -13,7 +10,6 @@ EAF-->AM --: EdgeApp
 
 AM->Stor ++: saveApplication()
 Stor-->AM --:
-
 
 AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.verify.puml&fmt=svg verify()]]
 EApp-->AM --:

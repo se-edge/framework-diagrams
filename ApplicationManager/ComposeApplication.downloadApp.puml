@@ -1,12 +1,9 @@
 @startuml
 title "ComposeApplication downloadApp"
 
-participant ComposeApplication as CA
-collections ComposeService as CS
-participant DockerProxy as D
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 [->CA: downloadApp()
-
 
 loop foreach service
 CA->CS ++: pull()

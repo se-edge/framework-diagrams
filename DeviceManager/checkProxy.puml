@@ -2,9 +2,7 @@
 
 title "DeviceManager checkProxy"
 
-participant DeviceManager as DM
-database Storage as Stor
-participant Host
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 [->DM: checkProxy()
 

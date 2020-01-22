@@ -2,9 +2,7 @@
 
 title "ApplicationManager start"
 
-participant ApplicationManager as AM
-database Storage as Stor
-participant EdgeApplication as EApp
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 [->AM: start
 
