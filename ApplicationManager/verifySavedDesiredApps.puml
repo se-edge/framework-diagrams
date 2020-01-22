@@ -15,16 +15,7 @@ loop foreach desired app
 end
 
 loop foreach installed app not in desired list
-    AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.remove.puml&fmt=svg remove()]]
-    EApp-->AM --:
-
-    AM->Stor ++: removeApplication()
-    Stor-->AM --:
-
-    opt appId not used by other instance
-        AM->Stor ++: removeDescription()
-        Stor-->AM --:
-    end
+    note over AM: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/removeApp.puml&fmt=svg removeApp()]]
 end
 
 AM-->[:

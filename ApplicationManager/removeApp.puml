@@ -1,0 +1,23 @@
+@startuml
+title "ApplicationManager removeApp"
+
+participant ApplicationManager as AM
+database Storage as Stor
+participant EdgeApplication as EApp
+
+[->AM: removeApp()
+
+AM->EApp ++: [[http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/se-edge/diagrams/develop/ApplicationManager/ComposeApplication.remove.puml&fmt=svg remove()]]
+EApp-->AM --:
+
+AM->Stor ++: removeApplication()
+Stor-->AM --:
+
+opt appId not used by other instance
+    AM->Stor ++: removeDescription()
+    Stor-->AM --:
+end
+
+AM-->[:
+@enduml
+
