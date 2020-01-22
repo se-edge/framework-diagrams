@@ -10,8 +10,11 @@ class EdgeApplication {
     String instanceId
     String serviceHealthCheck
 }
+class AppDescription {
+    String description
+    String appId
+}
 class ComposeApplication {
-    String compose
     String projectName = instanceId
 }
 class ComposeService {
@@ -31,9 +34,11 @@ class Status
 class DesiredStatus
 
 ApplicationManager *-- "*"EdgeApplication
+ApplicationManager *-- "*"AppDescription
 EdgeApplication *-- DesiredStatus
 EdgeApplication *-- ComposeApplication
 EdgeApplication *-- Status
+EdgeApplication o-- AppDescription
 ComposeApplication *-- "*" ComposeService
 ComposeService *-- "*" Volume
 ComposeService o-- DockerContainer
