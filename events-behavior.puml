@@ -1,0 +1,13 @@
+@startuml
+participant "a component" as C1
+participant "another component" as C2
+participant "event broker" as B
+C1->>B ++: SUB /stuff
+return done
+C2->>B ++: PUB /stuff
+return done
+B->>C1 ++: new stuff
+return done
+note left: Message handling is not done during receiving
+C1->>C1 : Manage stuff
+@enduml
