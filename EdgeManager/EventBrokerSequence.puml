@@ -1,0 +1,18 @@
+@startuml
+
+autonumber
+
+Subscriber -> EventBroker: Subscribe
+
+activate EventBroker
+EventBroker -> Subscriber : Subscription
+deactivate EventBroker
+
+Publisher -> EventBroker : Publish
+activate EventBroker
+EventBroker -> Publisher 
+EventBroker -> Subscriber : Queued Event
+deactivate EventBroker
+
+
+@enduml
