@@ -1,0 +1,16 @@
+@startuml
+object Subscriber{
+}
+object Publisher{
+}
+
+object EventBroker { 
+  -list subscriptionList
+  +void Publish (any)  
+  +AddSubscription(type, subscriber)
+}
+
+Subscriber <--right- "QueuedEvent" EventBroker
+Subscriber <--> "Subscription" EventBroker 
+Publisher -up--> "Publish" EventBroker
+@enduml
