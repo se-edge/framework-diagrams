@@ -1,0 +1,11 @@
+@startuml
+
+Cloud -> EdgeManager: NewCommand for IDX
+Cloud <- EdgeManager: Ack
+EdgeManager -> MqttClient: NewCommand for IDX
+EdgeManager <- MqttClient: Ack
+MqttClient -> AppIDX: NewCommand
+MqttClient <- AppIDX: CommandResult
+MqttClient -> EdgeManager: CommandResult
+EdgeManager -> Cloud: CommandResult
+@enduml
