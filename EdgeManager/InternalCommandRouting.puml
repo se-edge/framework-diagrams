@@ -3,9 +3,18 @@
 Cloud -> EdgeManager: NewCommand for IDX
 Cloud <- EdgeManager: Ack
 EdgeManager -> MqttClient: NewCommand for IDX
-EdgeManager <- MqttClient: Ack
 MqttClient -> AppIDX: NewCommand
-MqttClient <- AppIDX: CommandResult
-MqttClient -> EdgeManager: CommandResult
-EdgeManager -> Cloud: CommandResult
+MqttClient <- AppIDX: Ack
+MqttClient -> EdgeManager: Ack
+EdgeManager -> Cloud: Ack
+
+... ...
+
+MqttClient <- AppIDX: New Telemetry
+MqttClient -> EdgeManager: New Telemetry
+activate EdgeManager
+EdgeManager -> EdgeManager: Enrich message
+deactivate EdgeManager
+EdgeManager -> Cloud: New Telemetry from IDX
+
 @enduml
