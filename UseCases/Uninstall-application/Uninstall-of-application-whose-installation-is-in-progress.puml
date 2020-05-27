@@ -1,0 +1,41 @@
+@startuml
+title Uninstall of application whose installation is in progress
+
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
+
+User -> EH : register to telemetry events
+User -> EM : edgemanager is started
+activate EM
+EM -> EM : edgemaanger bootstraps
+User -> Hub : add application to desired twin (install request)
+Hub --> EM : notify desired twin update
+EM -> EM : manage twin
+note right of EM
+ Enterring in a synchronous task.
+ EM is blind to any other event
+end note
+EM -> EM: start installation process
+activate EM #Green
+EM -> EM : Writing log install in progress
+EM --> Hub : send install in progress event
+Hub --> EH : send install in progress event
+EH --> User : event install in progress
+... check inputs ...
+User -> Hub : remove app from desired twin (uninstall request)
+Hub --> EM : notify desired twin update
+... download images ...
+EM -> EM : compose up (installation process is finished)
+deactivate EM
+note right of EM
+ Since installation process is synchronous,
+ manage twin can't occure before that point
+end note
+EM -> EM : managed twin
+EM -> EM : start uninstall process
+activate EM #Red
+EM -> EM : Writing log uninstall in progress
+... uninstall app ...
+EM --> EM : remove app from reported twin
+EM --> Hub : send updated reported twin
+deactivate EM
+@enduml
