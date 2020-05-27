@@ -3,8 +3,8 @@ title Uninstall of application whose installation is in progress
 
 !include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
-User -> User : begin test initialization stages
-note left : Given
+note left of User : Given
+EM -> EM : edgemanager is started and bootstrapped
 User -> Hub : request update desired install
 Hub -> EM : notify update desired install
 activate EM
