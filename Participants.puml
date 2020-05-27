@@ -27,9 +27,6 @@ participant Hub as Hub
 participant EventHub as EH
 participant cloud
 
-
-participant "Component tests" as L2T
-
 hide unlinked
 
 @enduml
