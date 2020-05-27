@@ -24,6 +24,7 @@ participant Host
 
 participant BootstrapService as BS
 participant Hub as Hub
+participant EventHub as EH
 participant cloud
 
 hide unlinked
