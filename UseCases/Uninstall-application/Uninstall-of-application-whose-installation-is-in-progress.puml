@@ -3,7 +3,7 @@ title Uninstall of application whose installation is in progress
 
 !include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
-User -> EH : register to C2D messages
+User -> EH : register to D2C messages
 User -> EM : edgemanager is started
 activate EM
 EM -> EM : edgemanager bootstraps
