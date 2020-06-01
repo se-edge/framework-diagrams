@@ -1,28 +1,49 @@
 @startuml
-title Uninstall of application whose installation is in progress
+title Device reboot while application installation is in progress
 
 !include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
-note left of User : Given
-EM -> EM : edgemanager is started and bootstrapped
-User -> Hub : request update desired install
-Hub -> EM : notify update desired install
-activate EM
-EM -> EM: acknowledge desired install
-EM -> EH : send install in progress
+User -> EH : register to D2C messages
+User -> Host : edgemanager is started
+Host -> EM : edgemanager is started
+EM -> EM : edgemanager bootstraps
+User -> Hub : add application to desired twin (install request)
+Hub --> EM : notify desired twin update
+EM -> EM : manage twin
+note right of EM
+ Enterring in a synchronous task.
+ EM is blind to any other event
+end note
+EM -> EM: start installation process
+activate EM #Orange
+EM --> Hub : send install in progress event
+Hub --> EH : send install in progress event
 EH --> User : event install in progress
-note left : When
-User -> Hub : request update desired uninstall
-EM -> EM : installing...
-Hub -> EM : notify update desired uninstall
-EM -> EM : installing...
-EM -> EM : compose up, acknowledge desired uninstall
-EM -> EM : Writing log uninstall in progress
-EM -> EM : uninstalling...
-EM --> Hub : update reported uninstall
 deactivate EM
-User -> EM : Check log uninstall in progress
-note left : Then
-User -> Hub : Check update reported uninstall
-User -> User : Check no containers, images, networks, compose
+... check inputs ...
+User -> Host : reboot device
+Host -> Host : device reboot
+Host -> EM : start EdgeManager
+activate EM #green
+EM -> EM : starts boot process
+EM -> EM : checks storage version compatible with edgemanager version
+EM -> Stor : retrieves last known device desired state
+Stor --> EM : Last known device desired state information
+note right of EM
+ Enterring in a synchronous task.
+ EM is blind to any other event
+end note
+EM -> EM: continuation of the installation process
+activate EM #Orange
+EM -> EM : applies last known device desired state
+... download images ...
+EM -> EM : compose up (installation process is finished)
+deactivate EM
+EM -> EM : wait for compose indicates that the application is healthy 
+EM -> Hub : connects to Hub
+Hub --> EM : receives full twin for device desired state
+EM -> EM : checks device actual state equals device desired state
+EM --> Hub : send updated reported twin
+EM -> EM : reboot process is finished
+deactivate EM
 @enduml
