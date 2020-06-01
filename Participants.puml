@@ -1,7 +1,7 @@
 @startuml
 
 actor User
-
+participant Host
 participant EdgeManager as EM
 
 participant ApplicationManager as AM
@@ -20,7 +20,6 @@ participant MqttClient as Mqtt
 participant Broker as Broker
 
 database Storage as Stor
-participant Host
 
 participant BootstrapService as BS
 participant Hub as Hub
