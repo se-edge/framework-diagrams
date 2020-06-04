@@ -9,33 +9,40 @@ activate EM
 EM -> EM : edgemanager bootstraps
 User -> Hub : add application to desired twin (install request)
 Hub --> EM : notify desired twin update
-EM -> EM : manage twin
 note right of EM
- Enterring in a synchronous task.
- EM is blind to any other event
+Begin manage twin synchronous task
 end note
 EM -> EM: start installation process
 activate EM #Green
-EM -> EM : Writing log install in progress
 EM --> Hub : send install in progress event
 Hub --> EH : send install in progress event
 EH --> User : event install in progress
 ... check inputs ...
 User -> Hub : remove app from desired twin (uninstall request)
 Hub --> EM : notify desired twin update
+note right of EM
+manage twin task already in progress,
+save the new twin event
+and wait for the task to become available
+end note
 ... download images ...
 EM -> EM : compose up (installation process is finished)
 deactivate EM
 note right of EM
- Since installation process is synchronous,
- manage twin can't occure before that point
+Finish manage twin synchronous task
 end note
-EM -> EM : managed twin
+note right of EM
+Begin manage twin synchronous task
+end note
 EM -> EM : start uninstall process
 activate EM #Red
-EM -> EM : Writing log uninstall in progress
+EM --> Hub : send uninstall in progress event
+Hub --> EH : send uninstall in progress event
 ... uninstall app ...
 EM --> EM : remove app from reported twin
 EM --> Hub : send updated reported twin
+note right of EM
+Finish manage twin synchronous task
+end note
 deactivate EM
 @enduml
