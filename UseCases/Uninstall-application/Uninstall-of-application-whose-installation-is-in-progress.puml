@@ -39,7 +39,7 @@ activate EM #Red
 EM --> Hub : send uninstall in progress event
 Hub --> EH : send uninstall in progress event
 ... uninstall app ...
-EM --> EM : remove app from reported twin
+EM -> EM : remove app from reported twin
 EM --> Hub : send updated reported twin
 note right of EM
 Finish manage twin synchronous task
