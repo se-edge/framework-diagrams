@@ -1,49 +1,67 @@
 @startuml
 title Device reboot while application installation is in progress
 
-!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
+actor User
+participant Host
+participant EdgeManager as EM
+database Storage as Stor
+participant Docker as Dock
+participant Hub as Hub
+participant EventHub as EH
 
 User -> EH : register to D2C messages
 User -> Host : edgemanager is started
 Host -> EM : edgemanager is started
+activate EM
 EM -> EM : edgemanager bootstraps
 User -> Hub : add application to desired twin (install request)
 Hub --> EM : notify desired twin update
-EM -> EM : manage twin
 note right of EM
- Enterring in a synchronous task.
- EM is blind to any other event
+Begin desired processing
 end note
 EM -> EM: start installation process
-activate EM #Orange
+activate EM #Green
 EM --> Hub : send install in progress event
 Hub --> EH : send install in progress event
 EH --> User : event install in progress
 deactivate EM
-... check inputs ...
+... download description, check file integrity, interpret file ...
+note right of EM
+in this usecase, edgemanager reboot occurs before step save description
+end note
 User -> Host : reboot device
 Host -> Host : device reboot
 Host -> EM : start EdgeManager
-activate EM #green
-EM -> EM : starts boot process
-EM -> EM : checks storage version compatible with edgemanager version
-EM -> Stor : retrieves last known device desired state
-Stor --> EM : Last known device desired state information
-note right of EM
- Enterring in a synchronous task.
- EM is blind to any other event
-end note
-EM -> EM: continuation of the installation process
 activate EM #Orange
-EM -> EM : applies last known device desired state
-... download images ...
-EM -> EM : compose up (installation process is finished)
-deactivate EM
-EM -> EM : wait for compose indicates that the application is healthy 
+note right of EM
+Begin boot process
+end note
+EM -> EM : checks EdgeManager version compatible with storage version
+EM -> Stor : retrieves information of device installed applications and their saved desired status
+Stor --> EM : information of device installed applications and their saved desired status
+EM -> EM : checks device installed applications and their saved desired status are effective on device
 EM -> Hub : connects to Hub
 Hub --> EM : receives full twin for device desired state
 EM -> EM : checks device actual state equals device desired state
+note right of EM
+Begin desired processing
+end note
+EM -> EM: start installation process
+activate EM #Green
+EM --> Hub : send install in progress event
+Hub --> EH : send install in progress event
+EH --> User : event install in progress
+EM -> EM : download description url
+EM -> EM : check file integrity
+EM -> Dock : interpret file
+Dock --> EM : interpreted file
+EM -> Dock : save description
+... download images ...
+EM -> Dock : up application
+EM -> Stor : save instance
+Dock -> EM : service status changed
 EM --> Hub : send updated reported twin
-EM -> EM : reboot process is finished
-deactivate EM
+note right of EM
+Finish desired processing
+end note
 @enduml
