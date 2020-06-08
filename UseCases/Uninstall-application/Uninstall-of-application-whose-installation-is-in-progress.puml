@@ -9,33 +9,46 @@ activate EM
 EM -> EM : edgemanager bootstraps
 User -> Hub : add application to desired twin (install request)
 Hub --> EM : notify desired twin update
-EM -> EM : manage twin
 note right of EM
- Enterring in a synchronous task.
- EM is blind to any other event
+Begin desired processing
 end note
 EM -> EM: start installation process
 activate EM #Green
-EM -> EM : Writing log install in progress
 EM --> Hub : send install in progress event
 Hub --> EH : send install in progress event
 EH --> User : event install in progress
 ... check inputs ...
 User -> Hub : remove app from desired twin (uninstall request)
+note right of User
+/!\ Can occur anytime during the installation process
+end note
 Hub --> EM : notify desired twin update
+note right of EM
+Apply patch and flag desired as 'to process'
+end note
 ... download images ...
-EM -> EM : compose up (installation process is finished)
+EM -> EM : compose up
 deactivate EM
 note right of EM
- Since installation process is synchronous,
- manage twin can't occure before that point
+Installation process is finished, first patch has been processed.
+EM now check if the local desired is flagged 'to process'.
+Since the answer is yes, we go for another desired processing.
+For uninstall this time.
 end note
-EM -> EM : managed twin
+EM -> EM : check if local desired have to be processed
 EM -> EM : start uninstall process
 activate EM #Red
-EM -> EM : Writing log uninstall in progress
+EM --> Hub : send uninstall in progress event
+note right of EM
+There is no twin manipulation here,
+the installed app does not make it's way to twins
+end note
+Hub --> EH : send uninstall in progress event
 ... uninstall app ...
-EM --> EM : remove app from reported twin
-EM --> Hub : send updated reported twin
+EM -> EM : check if local desired have to be processed
+deactivate EM
+note right of EM
+Finish desired processing
+end note
 deactivate EM
 @enduml
