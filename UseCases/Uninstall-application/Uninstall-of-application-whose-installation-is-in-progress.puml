@@ -41,7 +41,7 @@ activate EM #Red
 EM --> Hub : send uninstall in progress event
 note right of EM
 There is no twin manipulation here,
-the installed app does make it's way to twins
+the installed app does not make it's way to twins
 end note
 Hub --> EH : send uninstall in progress event
 ... uninstall app ...
