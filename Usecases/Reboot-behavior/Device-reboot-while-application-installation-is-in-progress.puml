@@ -27,15 +27,18 @@ EH --> User : event install in progress
 deactivate EM
 ... download description, check file integrity, interpret file ...
 note right of EM
-in this usecase, edgemanager reboot occurs before step save description
+In this usecase, edgemanager reboot interrupts desired processing and occurs before step save description
 end note
 User -> Host : reboot device
+deactivate EM
 Host -> Host : device reboot
+activate EM
 Host -> EM : start EdgeManager
-activate EM #Orange
 note right of EM
-Begin boot process
+Begin boot processing
 end note
+EM -> EM : start boot process
+activate EM #Orange
 EM -> EM : checks EdgeManager version compatible with storage version
 EM -> Stor : retrieves information of device installed applications and their saved desired status
 Stor --> EM : information of device installed applications and their saved desired status
@@ -64,4 +67,10 @@ EM --> Hub : send updated reported twin
 note right of EM
 Finish desired processing
 end note
+note right of EM
+Finish boot processing
+end note
+deactivate EM
+deactivate EM
+deactivate EM
 @enduml
