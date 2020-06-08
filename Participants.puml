@@ -9,6 +9,7 @@ participant EdgeAppFactory as EAF
 participant EdgeApplication as EApp
 participant ComposeApplication as CA
 collections ComposeService as CS
+participant Docker as Dock
 participant DockerContainer as DCont
 participant DockerComposeProxy as DComp
 participant DockerProxy as D

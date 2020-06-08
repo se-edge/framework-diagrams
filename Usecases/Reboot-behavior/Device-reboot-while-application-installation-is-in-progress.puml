@@ -1,13 +1,7 @@
 @startuml
 title Device reboot while application installation is in progress
 
-actor User
-participant Host
-participant EdgeManager as EM
-database Storage as Stor
-participant Docker as Dock
-participant Hub as Hub
-participant EventHub as EH
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
 User -> EH : register to D2C messages
 User -> Host : edgemanager is started
