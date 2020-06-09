@@ -19,9 +19,9 @@ EM --> Hub : send install in progress event
 Hub --> EH : send install in progress event
 EH --> User : event install in progress
 deactivate EM
-... download description, check file integrity, interpret file ...
+... installation in progress ...
 note right of EM
-In this usecase, edgemanager reboot interrupts desired processing and occurs before step save description
+In this usecase, edgemanager reboot interrupts desired processing and occurs before step save instance in storage
 end note
 User -> Host : reboot device
 deactivate EM
@@ -48,15 +48,7 @@ activate EM #Green
 EM --> Hub : send install in progress event
 Hub --> EH : send install in progress event
 EH --> User : event install in progress
-EM -> EM : download description url
-EM -> EM : check file integrity
-EM -> Dock : interpret file
-Dock --> EM : interpreted file
-EM -> Dock : save description
-... download images ...
-EM -> Dock : up application
-EM -> Stor : save instance
-Dock -> EM : service status changed
+... installation in progress ...
 EM --> Hub : send updated reported twin
 note right of EM
 Finish desired processing
