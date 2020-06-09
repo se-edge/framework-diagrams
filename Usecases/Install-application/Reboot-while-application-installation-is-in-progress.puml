@@ -1,5 +1,5 @@
 @startuml
-title Device reboot while application installation is in progress
+title Reboot while application installation is in progress
 
 !include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
