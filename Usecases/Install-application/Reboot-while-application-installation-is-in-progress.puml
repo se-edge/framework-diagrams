@@ -3,11 +3,11 @@ title Reboot while application installation is in progress
 
 !include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
-User -> EH : register to D2C messages
-User -> Host : edgemanager is started
-Host -> EM : edgemanager is started
+note right of EM
+EdgeManager is started and bootstrapped.
+User has registered to D2C messages on EventHub.
+end note
 activate EM
-EM -> EM : edgemanager bootstraps
 User -> Hub : add application to desired twin (install request)
 Hub --> EM : notify desired twin update
 note right of EM
@@ -21,7 +21,7 @@ EH --> User : event install in progress
 deactivate EM
 ... installation in progress ...
 note right of EM
-In this usecase, edgemanager reboot interrupts desired processing and occurs before step save instance in storage
+In this usecase example, edgemanager reboot interrupts desired processing and occurs before step save instance in storage
 end note
 User -> Host : reboot device
 deactivate EM
@@ -38,7 +38,7 @@ EM -> Stor : retrieves information of device installed applications and their sa
 Stor --> EM : information of device installed applications and their saved desired status
 EM -> EM : checks device installed applications and their saved desired status are effective on device
 EM -> Hub : connects to Hub
-Hub --> EM : receives full twin for device desired state
+Hub --> EM : receives full twin for device new desired and reported states
 EM -> EM : checks device actual state equals device desired state
 note right of EM
 Begin desired processing
