@@ -1,0 +1,62 @@
+@startuml
+title Reboot while application installation is in progress
+
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
+
+note right of EM
+EdgeManager is started and bootstrapped.
+User has registered to D2C messages on EventHub.
+end note
+activate EM
+User -> Hub : add application to desired twin (install request)
+Hub --> EM : notify desired twin update
+note right of EM
+Begin desired processing
+end note
+EM -> EM: start installation process
+activate EM #Green
+EM --> Hub : send install in progress event
+Hub --> EH : send install in progress event
+EH --> User : event install in progress
+deactivate EM
+... installation in progress ...
+note right of EM
+In this usecase example, edgemanager reboot interrupts desired processing and occurs before step save instance in storage
+end note
+User -> Host : reboot device
+deactivate EM
+Host -> Host : device reboot
+activate EM
+Host -> EM : start EdgeManager
+note right of EM
+Begin boot processing
+end note
+EM -> EM : start boot process
+activate EM #Orange
+EM -> EM : checks EdgeManager version compatible with storage version
+EM -> Stor : retrieves information of device installed applications and their saved desired status
+Stor --> EM : information of device installed applications and their saved desired status
+EM -> EM : checks device installed applications and their saved desired status are effective on device
+EM -> Hub : connects to Hub
+Hub --> EM : receives full twin for device new desired and reported states
+EM -> EM : checks device actual state equals device desired state
+note right of EM
+Begin desired processing
+end note
+EM -> EM: start installation process
+activate EM #Green
+EM --> Hub : send install in progress event
+Hub --> EH : send install in progress event
+EH --> User : event install in progress
+... installation in progress ...
+EM --> Hub : send updated reported twin
+note right of EM
+Finish desired processing
+end note
+note right of EM
+Finish boot processing
+end note
+deactivate EM
+deactivate EM
+deactivate EM
+@enduml

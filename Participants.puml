@@ -1,7 +1,7 @@
 @startuml
 
 actor User
-
+participant Host
 participant EdgeManager as EM
 
 participant ApplicationManager as AM
@@ -9,6 +9,7 @@ participant EdgeAppFactory as EAF
 participant EdgeApplication as EApp
 participant ComposeApplication as CA
 collections ComposeService as CS
+participant Docker as Dock
 participant DockerContainer as DCont
 participant DockerComposeProxy as DComp
 participant DockerProxy as D
@@ -20,7 +21,6 @@ participant MqttClient as Mqtt
 participant Broker as Broker
 
 database Storage as Stor
-participant Host
 
 participant BootstrapService as BS
 participant Hub as Hub
