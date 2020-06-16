@@ -1,0 +1,18 @@
+@startuml
+title Edge Installer signing
+
+participant "Installer delivery zone" as idz
+
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
+
+
+
+note right of CI
+The CI owns private key for signing
+endnote
+
+CI -> CI : Build Edge Installer
+CI -> CI : Signe Edge Installer
+CI -> idz : Upload Edge Installer binaries
+CI -> idz : Upload Edge Installer signature
+@enduml
