@@ -1,0 +1,16 @@
+@startuml
+title First install of the Edge Manager
+
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
+
+participant EdgeInstaller as EI
+note left of User
+ETP credentials are known
+endnote
+User -> cloud : Download Edge Installer
+User -> EI : Run Edge Installer(target_ip, ssh_credentials)
+EI -> cloud : Download Edge Manager Signature
+EI -> cloud : Download Edge Manager Image
+EI -> EI : Verify EdgeManager Signature (both integrity and authenticity)
+EI -> Target : Install Edge Manager
+@enduml
