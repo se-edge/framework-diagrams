@@ -1,0 +1,37 @@
+@startuml
+title Reboot and restoration of the device desired states
+
+!include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
+
+note right of EM
+EdgeManager is started and bootstrapped.
+Application is installed and running on device.
+User has registered to D2C messages on EventHub.
+end note
+User -> Host : reboot device
+deactivate EM
+Host -> Host : device reboot
+activate EM
+Host -> EM : start EdgeManager
+note right of EM
+Begin boot processing
+end note
+EM -> EM : start boot process
+activate EM #Orange
+EM -> EM : checks EdgeManager version compatible with storage version
+EM -> Stor : retrieves information of device installed applications and their saved desired status
+Stor --> EM : information of device installed applications and their saved desired status
+EM -> EM : checks device installed applications and their saved desired status are effective on device
+... starting application ...
+EM -> Hub : connects to Hub
+Hub --> EM : receives full twin for device new desired and reported states
+EM --> Hub : send updated reported twin state starting
+EM -> EM : checks device actual state equals device desired state
+... starting application ...
+EM --> Hub : send updated reported twin state running
+note right of EM
+Finish boot processing
+end note
+deactivate EM
+deactivate EM
+@enduml
