@@ -5,14 +5,18 @@ title Reboot and restoration of the device desired states
 
 note right of EM
 EdgeManager is started and bootstrapped.
-Application is installed and running on device.
+In this usecase example, an application is installed and running on device.
+Application state "running" is reported on Hub.
 User has registered to D2C messages on EventHub.
 end note
 User -> Host : reboot device
 deactivate EM
 Host -> Host : device reboot
 activate EM
-Host -> EM : start EdgeManager
+Host -> EM : start EdgeManager (restart always)
+activate App
+Host -> App : start application (restart always)
+... starting application ...
 note right of EM
 Begin boot processing
 end note
@@ -22,7 +26,6 @@ EM -> EM : checks EdgeManager version compatible with storage version
 EM -> Stor : retrieves information of device installed applications and their saved desired status
 Stor --> EM : information of device installed applications and their saved desired status
 EM -> EM : checks device installed applications and their saved desired status are effective on device
-... starting application ...
 EM -> Hub : connects to Hub
 Hub --> EM : receives full twin for device new desired and reported states
 EM --> Hub : send updated reported twin state starting
@@ -34,4 +37,5 @@ Finish boot processing
 end note
 deactivate EM
 deactivate EM
+deactivate App
 @enduml
