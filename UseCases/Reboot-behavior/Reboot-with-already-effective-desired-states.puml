@@ -27,6 +27,11 @@ EM -> Stor : retrieves information of device installed applications and their sa
 EM -> EM : checks device installed applications and their saved desired status are effective on device
 EM -> Hub : connects to Hub
 Hub --> EM : receives full twin
+note right of EM
+The transient starting state of the application cannot be hidden.
+This transient state is reported and is therefore visible from the Hub
+until the end of the application startup and in the report of the final running state.
+end note
 EM -> Hub : send updated reported twin state starting
 EM -> EM : checks device actual state equals device desired state
 ... starting application ...
