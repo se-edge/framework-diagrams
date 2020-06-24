@@ -28,8 +28,10 @@ EM -> EM : checks device installed applications and their saved desired status a
 EM -> Hub : connects to Hub
 Hub --> EM : receives full twin
 note right of EM
-The transient starting state of the application is reported and is therefore visible from the Hub (cannot be hidden)
-until the end of the application startup and the report of the final running state.
+The transient starting state of the application is reported
+and is therefore visible from the Hub until the end of the application startup
+and the report of the final running state.
+This transient state cannot be hidden.
 end note
 EM -> Hub : send updated reported twin state starting
 EM -> EM : checks device actual state equals device desired state
