@@ -1,5 +1,5 @@
 @startuml
-title Reboot and restoration of the device desired states
+title Reboot with already effective desired states
 
 !include https://raw.githubusercontent.com/se-edge/diagrams/develop/Participants.puml
 
