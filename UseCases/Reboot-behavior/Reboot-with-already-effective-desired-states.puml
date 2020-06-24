@@ -24,14 +24,13 @@ EM -> EM : start boot process
 activate EM #Orange
 EM -> EM : checks EdgeManager version compatible with storage version
 EM -> Stor : retrieves information of device installed applications and their saved desired status
-Stor --> EM : information of device installed applications and their saved desired status
 EM -> EM : checks device installed applications and their saved desired status are effective on device
 EM -> Hub : connects to Hub
-Hub --> EM : receives full twin for device new desired and reported states
-EM --> Hub : send updated reported twin state starting
+Hub --> EM : receives full twin
+EM -> Hub : send updated reported twin state starting
 EM -> EM : checks device actual state equals device desired state
 ... starting application ...
-EM --> Hub : send updated reported twin state running
+EM -> Hub : send updated reported twin state running
 note right of EM
 Finish boot processing
 end note
