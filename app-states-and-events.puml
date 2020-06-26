@@ -1,16 +1,16 @@
 @startuml
-[*]        -down-> Starting : policy update [new app]\n/🗲Install in progress
+[*]        -down-> Starting : twin update [new app]\n/🗲Install in progress
 Starting   --> Running: [desired state == running]
 Starting   --> Unhealthy: Health check [desired state == running && status == unhealthy]
 Starting   --> Stopped: [desired state == stopped]
 Starting   --> [*] : [Install failed]\n/🗲Install failed
-Running    --> Stopped : policy update [desired state == stopped]
+Running    --> Stopped : twin update [desired state == stopped]
 Running    --> Unhealthy: Health check [status == unhealthy]
-Running    --> [*] : policy update [app removed]\n/🗲Uninstall in progress
-Unhealthy  --> Stopped: policy update [desired state == stopped]
+Running    --> [*] : twin update [app removed]\n/🗲Uninstall in progress
+Unhealthy  --> Stopped: twin update [desired state == stopped]
 Unhealthy  --> Unhealthy: Health check [status == unhealthy]
 Unhealthy  --> Running: Health check [status == healthy]
-Unhealthy  --> [*] : policy update [app removed]\n/🗲Uninstall in progress
-Stopped    --> Running: policy update [desired state == running]
-Stopped    --> [*] : policy update [app removed]\n/🗲Uninstall in progress
+Unhealthy  --> [*] : twin update [app removed]\n/🗲Uninstall in progress
+Stopped    --> Running: twin update [desired state == running]
+Stopped    --> [*] : twin update [app removed]\n/🗲Uninstall in progress
 @enduml
