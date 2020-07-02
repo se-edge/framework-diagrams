@@ -1,16 +1,35 @@
 @startuml
-[*]        -down-> Starting : twin update [new app]\n/🗲Install in progress
-Starting   --> Running: [desired state == running]
-Starting   --> Unhealthy: Health check [desired state == running && status == unhealthy]
-Starting   --> Stopped: [desired state == stopped]
-Starting   --> [*] : [Install failed]\n/🗲Install failed
-Running    --> Stopped : twin update [desired state == stopped]
-Running    --> Unhealthy: Health check [status == unhealthy]
-Running    --> [*] : twin update [app removed]\n/🗲Uninstall in progress
+legend top left
+  On transitions : trigger [guard] /action
+  🗲 is a system telemetry
+  ↻ means we stay in this state
+  On every state entrance a twin update is performed
+endlegend
+state fork_state <<fork>>
+[*]        -down-> fork_state : twin update [new app] /🗲install in progress & compose create
+[*]        --> [*] : install failed (download failes / bad twind / bad compose / ...) [] /🗲install failed && clean artefacts
+fork_state -down-> Starting : [desired state == running] /compose start
+fork_state -down-> Stopped : [desired state == stopped]
+fork_state -down-> Stopped : [desired state == running && fail to start]
+Starting     : ↻ While probe container health is starting && container state is running
+Starting   --> Running: [probe container health == healthy]
+Starting   --> Unhealthy: health check [desired state == running && probe container health == unhealthy]
+Starting   --> Stopped: twin update [desired state == stopped] /compose stop
+Running      : ↻ While probe container health is healthty && container state is running
+Running    --> Stopped : twin update [desired state == stopped] /compose stop
+Running    --> Unhealthy: health check [probe container health == unhealthy]
+Running    --> [*] : twin update [app removed] /🗲uninstall in progress & compose down
+Unhealthy    : ↻ While probe container health is unhealthy && container state is running
 Unhealthy  --> Stopped: twin update [desired state == stopped]
-Unhealthy  --> Unhealthy: Health check [status == unhealthy]
-Unhealthy  --> Running: Health check [status == healthy]
-Unhealthy  --> [*] : twin update [app removed]\n/🗲Uninstall in progress
-Stopped    --> Running: twin update [desired state == running]
-Stopped    --> [*] : twin update [app removed]\n/🗲Uninstall in progress
+Unhealthy  --> Stopped: probe container crashed
+Unhealthy  --> Unhealthy: health check [probe container health == unhealthy]
+Unhealthy  --> Running: health check [probe container health == healthy]
+Unhealthy  --> [*] : twin update [app removed] /🗲uninstall in progress & compose down
+Stopped    : ↻ While prob container state is dead, exited, created
+Stopped    --> Starting : twin update [desired state == running] /compose start
+Stopped    --> Restarting: probe container crashed [restart mode == always] /docker auto restart
+Stopped    --> [*] : twin update [app removed] /🗲uninstall in progress && compose down
+Restarting : ↻ While probe container state is restarting
+Restarting --> Stopped : [state is stopped, dead, exited, created]
+Restarting --> Running: [probe container health == healthy && state == running]
 @enduml
