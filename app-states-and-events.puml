@@ -3,7 +3,7 @@ legend top left
   On transitions : trigger [guard] /action
   🗲 is a system telemetry
   ↻ means we stay in this state
-  On every state entrance a twin update is performed
+  On every state entrance an update on reported twin is performed
 endlegend
 [*]        -down-> Stopped: twin update [new app] /🗲install in progress & compose create
 [*]            --> [*]        : twin update [new app && install failed (download failes / bad twind / bad compose / ...)] /🗲install failed && clean artefacts
@@ -31,5 +31,5 @@ Unhealthy      --> Removing   : twin update [app removed] /🗲uninstall in prog
 Restarting                    : ↻ While probe container state is restarting
 Restarting     --> Stopped    : [state is stopped, dead, exited, created]
 Restarting     --> Running    : [probe container health == healthy && state == running]
-Removing       --> [*]
+Removing       --> [*]        : [] /remove app from reported twins
 @enduml
