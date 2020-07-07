@@ -17,7 +17,7 @@ Starting       --> Running    : [probe container health == healthy]
 Starting       --> Unhealthy  : health check [desired state == running && probe container health == unhealthy]
 Starting       --> Stopped    : twin update [desired state == stopped] /🗲stop in progress & compose stop
 Running                       : ↻ While probe container health is healthty && container state is running
-Running        --> Stopped    : twin update [desired state == stopped] /🗲start in progress & compose stop
+Running        --> Stopped    : twin update [desired state == stopped] /🗲stop in progress & compose stop
 Running        --> Stopped    : probe container crashed
 Running        --> Stopped    : app exit normaly
 Running        --> Unhealthy  : health check [probe container health == unhealthy]
