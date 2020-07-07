@@ -8,16 +8,16 @@ endlegend
 [*]        -down-> Stopped: twin update [new app] /🗲install in progress & compose create
 [*]            --> [*]        : twin update [new app && install failed (download failes / bad twind / bad compose / ...)] /🗲install failed && clean artefacts
 Stopped                       : ↻ While prob container state is dead, exited, created
-Stopped        --> Starting   : twin update [desired state == running] /compose start
+Stopped        --> Starting   : twin update [desired state == running] /🗲start in progress & compose create & compose start
 Stopped        --> Restarting : app exited || crashed [restart mode == always] /docker auto restart
 Stopped        --> Stopped    : twin update [desired state == running && compose start failed]
 Stopped        --> Removing   : twin update [app removed] /🗲uninstall in progress && compose down
 Starting                      : ↻ While probe container health is starting && container state is running
 Starting       --> Running    : [probe container health == healthy]
 Starting       --> Unhealthy  : health check [desired state == running && probe container health == unhealthy]
-Starting       --> Stopped    : twin update [desired state == stopped] /compose stop
+Starting       --> Stopped    : twin update [desired state == stopped] /🗲stop in progress & compose stop
 Running                       : ↻ While probe container health is healthty && container state is running
-Running        --> Stopped    : twin update [desired state == stopped] /compose stop
+Running        --> Stopped    : twin update [desired state == stopped] /🗲start in progress & compose stop
 Running        --> Stopped    : probe container crashed
 Running        --> Stopped    : app exit normaly
 Running        --> Unhealthy  : health check [probe container health == unhealthy]
