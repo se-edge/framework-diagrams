@@ -10,7 +10,7 @@ endlegend
 Stopped                       : ↻ While prob container state is dead, exited, created
 Stopped        --> Starting   : twin update [desired state == running] /🗲start in progress & compose create & compose start
 Stopped        --> Restarting : app exited || crashed [restart mode == always] /docker auto restart
-Stopped        --> Stopped    : twin update [desired state == running && compose start failed]
+Stopped        --> Stopped    : twin update [desired state == running && compose start failed] /🗲start failed
 Stopped        --> Removing   : twin update [app removed] /🗲uninstall in progress && compose down
 Starting                      : ↻ While probe container health is starting && container state is running
 Starting       --> Running    : [probe container health == healthy]
@@ -23,7 +23,7 @@ Running        --> Stopped    : app exit normaly
 Running        --> Unhealthy  : health check [probe container health == unhealthy]
 Running        --> Removing   : twin update [app removed] /🗲uninstall in progress & compose down
 Unhealthy                     : ↻ While probe container health is unhealthy && container state is running
-Unhealthy      --> Stopped    : twin update [desired state == stopped]
+Unhealthy      --> Stopped    : twin update [desired state == stopped] /🗲stop in progress & compose stop
 Unhealthy      --> Stopped    : probe container crashed
 Unhealthy      --> Stopped    : app exit normaly
 Unhealthy      --> Running    : health check [probe container health == healthy]
