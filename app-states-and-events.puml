@@ -6,9 +6,9 @@ legend top left
   On every state entrance an update on reported twin is performed
 endlegend
 [*]        -down-> Stopped: twin update [new app] /🗲install in progress & compose create
-[*]            --> [*]        : twin update [new app && install failed (download failes / bad twind / bad compose / ...)] /🗲install failed && clean artefacts
+[*]            --> [*]        : twin update [new app && install failed (download failed / bad twin / bad compose / ...)] /🗲install failed && clean artefacts
 Stopped                       : ↻ While prob container state is dead, exited, created
-Stopped        --> Starting   : twin update [desired state == running] /🗲start in progress & compose create & compose start
+Stopped        --> Starting   : twin update [desired state == running] /🗲start in progress & compose start
 Stopped        --> Restarting : app exited || crashed [restart mode == always] /docker auto restart
 Stopped        --> Stopped    : twin update [desired state == running && compose start failed] /🗲start failed
 Stopped        --> Removing   : twin update [app removed] /🗲uninstall in progress && compose down
