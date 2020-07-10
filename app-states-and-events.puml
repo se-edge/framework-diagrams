@@ -31,6 +31,7 @@ Unhealthy      --> Running    : health check [probe container health == healthy]
 Unhealthy      --> Removing   : twin update [app removed] /🗲uninstall in progress & compose down
 Restarting                    : ↻ While probe container state is restarting
 Restarting     --> Stopped    : [state is stopped, dead, exited, created]
+Restarting     --> Unhealthy  : [probe container health == unhealthy && state == running]
 Restarting     --> Running    : [probe container health == healthy && state == running]
 Removing       --> [*]        : [] /remove app from reported twins
 @enduml
