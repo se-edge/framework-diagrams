@@ -14,19 +14,19 @@ if (error ?) then (no)
   if (error ?) then (no)
 'Signature verification error
   else (yes)
-    : Make sure there is no package id in reporteed twin;
+    : Do not change the package id in reported twin;
     :🗲 Configuration failed
     One error code with a list containing a single file, the one that fails;
     stop
   endif
 'Download error
 else (yes)
-    : Make sure there is no package id in reporteed twin;
+    : Do not change the package id in reported twin;
     :🗲 Configuration failed
     One error code with a list containing a single file, the one that fails;
     stop
 endif
-repeat while (more files to downlaod/verify?)
+repeat while (more files to download/verify?)
 
 repeat
   :copy a single file to destination;
@@ -34,6 +34,9 @@ repeat while (more file to copy?)
 if (error ?) then (no)
   :Update reported twin with newly applied package id;
   stop
+'No space left on device
+'volume does not exist
+'Any copy error in fact
 else (yes)
       : Make sure there is no package id in reporteed twin;
       :🗲 Configuration failed.
