@@ -1,0 +1,22 @@
+@startuml
+legend top left
+  🗲 is a system telemetry
+endlegend
+
+start
+-> Twin update;
+:🗲 Configuration in progress;
+repeat
+  :download file;
+  :check intégrity;
+  :copy file to destination;
+repeat while (another file to process?)
+
+if (error occured ?) then (no)
+  : Update reported twin with newly applied package id;
+else (yes)
+  : Make sure there is no package id in reporteed twin;
+  :🗲 Configuration failed;
+endif
+stop
+@enduml
