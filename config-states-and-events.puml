@@ -6,17 +6,38 @@ endlegend
 start
 -> Twin update;
 :🗲 Configuration in progress;
-repeat
-  :download file;
-  :check intégrity;
-  :copy file to destination;
-repeat while (another file to process?)
-
-if (error occured ?) then (no)
-  : Update reported twin with newly applied package id;
+'For each file
+repeat 
+:download a single file;
+if (error ?) then (no)
+:check signature;
+  if (error ?) then (no)
+'Signature verification error
+  else (yes)
+    : Make sure there is no package id in reporteed twin;
+    :🗲 Configuration failed
+    One error code with a list containing a single file, the one that fails;
+    stop
+  endif
+'Download error
 else (yes)
-  : Make sure there is no package id in reporteed twin;
-  :🗲 Configuration failed;
+    : Make sure there is no package id in reporteed twin;
+    :🗲 Configuration failed
+    One error code with a list containing a single file, the one that fails;
+    stop
 endif
+repeat while (more files to downlaod/verify?)
+
+repeat
+  :copy a single file to destination;
+repeat while (more file to copy?)
+if (error ?) then (no)
+  :Update reported twin with newly applied package id;
+  stop
+else (yes)
+      : Make sure there is no package id in reporteed twin;
+      :🗲 Configuration failed.
+      One error code with a list of files;
 stop
+endif
 @enduml
