@@ -5,33 +5,62 @@ legend top left
   ↻ means we stay in this state
   On every state entrance an update on reported twin is performed
 endlegend
+' Tested
 [*]        -down-> Stopped: twin update [new app] /🗲install in progress & compose create
+' Tested
 [*]            --> [*]        : twin update [new app && install failed (download failed / bad twin / bad compose / ...)] /🗲install failed && clean artefacts
+' Tested
 Stopped                       : ↻ While prob container state is dead, exited, created
+' Tested (update testcase with check transient state starting)
 Stopped        --> Starting   : twin update [desired state == running] /🗲start in progress & compose start
+' Tested (update testcase with check transient state starting)
 Stopped        --> Starting   : install in progress [desired state == running] /🗲start in progress & compose start
+' Not tested
 Stopped        --> Restarting : app exited || crashed [restart mode == always] /docker auto restart
+' Tested
 Stopped        --> Stopped    : twin update [desired state == running && compose start failed] /🗲start failed
+' Tested (update testcase with check transient state removing)
 Stopped        --> Removing   : twin update [app removed] /🗲uninstall in progress && compose down
+' Not tested
 Starting                      : ↻ While probe container health is starting && container state is running
+' Tested (update testcase with check transient state starting)
 Starting       --> Running    : [probe container health == healthy]
+' Tested (update testcase with check transient state starting)
 Starting       --> Unhealthy  : health check [desired state == running && probe container health == unhealthy]
+' Not tested
 Starting       --> Stopped    : twin update [desired state == stopped] /🗲stop in progress & compose stop
+' Tested
 Running                       : ↻ While probe container health is healthty && container state is running
+' Tested
 Running        --> Stopped    : twin update [desired state == stopped] /🗲stop in progress & compose stop
+' Not tested
 Running        --> Stopped    : probe container crashed
+' Not tested
 Running        --> Stopped    : app exit normaly
+' Not tested
 Running        --> Unhealthy  : health check [probe container health == unhealthy]
+' Tested (update testcase with check transient state removing)
 Running        --> Removing   : twin update [app removed] /🗲uninstall in progress & compose down
+' Tested
 Unhealthy                     : ↻ While probe container health is unhealthy && container state is running
+' Not tested
 Unhealthy      --> Stopped    : twin update [desired state == stopped] /🗲stop in progress & compose stop
+' Not tested
 Unhealthy      --> Stopped    : probe container crashed
+' Not tested
 Unhealthy      --> Stopped    : app exit normaly
+' Not tested
 Unhealthy      --> Running    : health check [probe container health == healthy]
+' Not tested
 Unhealthy      --> Removing   : twin update [app removed] /🗲uninstall in progress & compose down
+' Not tested
 Restarting                    : ↻ While probe container state is restarting
+' Not tested
 Restarting     --> Stopped    : [state is stopped, dead, exited, created]
+' Not tested
 Restarting     --> Unhealthy  : [probe container health == unhealthy && state == running]
+' Not tested
 Restarting     --> Running    : [probe container health == healthy && state == running]
+' Tested (update testcase with check transient state removing)
 Removing       --> [*]        : [] /remove app from reported twins
 @enduml
