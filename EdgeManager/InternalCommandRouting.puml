@@ -1,21 +1,22 @@
 @startuml
 
 ... "SEND COMMAND" ...
-
 Cloud -> EdgeManager: Command to 1ad72bfe-ecfb-11ea-adc1-0242ac120002
 Cloud <-- EdgeManager: Ack
 EdgeManager -> MqttClient: Command to 1ad72bfe-ecfb-11ea-adc1-0242ac120002
-MqttClient -> "App 1ad72bfe-ecfb-11ea-adc1-0242ac120002":    EDG/Connector/1.0/1ad72bfe-ecfb-11ea-adc1-0242ac120002/command/receive
-
+MqttClient -> "Application": EDG/Connector/1.0/1ad72bfe-ecfb-11ea-adc1-0242ac120002/command/receive
 ... "SEND TELEMETRY" ...
 
-MqttClient <- "App 1ad72bfe-ecfb-11ea-adc1-0242ac120002": EDG/Connector/1.0/1ad72bfe-ecfb-11ea-adc1-0242ac120002/telemetry/send
+note right
+Instance ID =
+1ad72bfe-ecfb-11ea-adc1-0242ac120002
+end note
+
 MqttClient -> EdgeManager: Telemetry
 EdgeManager -> EdgeManager: Enrich Message
 EdgeManager -> Cloud: Telemetry
-
 Cloud --> EdgeManager: Ack
 EdgeManager --> MqttClient: Ack
-"App 1ad72bfe-ecfb-11ea-adc1-0242ac120002" <-- MqttClient: EDG/Connector/1.0/1ad72bfe-ecfb-11ea-adc1-0242ac120002/telemetry/ack
+"Application" <-- MqttClient: EDG/Connector/1.0/1ad72bfe-ecfb-11ea-adc1-0242ac120002/telemetry/ack
 
 @enduml
