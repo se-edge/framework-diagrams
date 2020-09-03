@@ -8,7 +8,6 @@ participant Application order 40
 ... "APPLICATION INIT" ...
 EdgeManager --> Application: Run ($InstanceID) of Application
 Application -> Application: Start $InstanceID
-Application -> MqttClient: EDG/Connector/1.0/$InstanceID/connected
 
 ... "SEND COMMAND" ...
 Cloud -> EdgeManager: Command to $InstanceID
