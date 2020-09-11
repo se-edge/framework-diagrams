@@ -1,59 +1,46 @@
 @startuml
 legend top left
-  🗲 is a system telemetry
+🗲 is a system telemetry
 endlegend
 
 start
--> Twin update (same instance id with new app id);
-:🗲 update to N+1 in progress;
-: Download N+1 description file;
-if (error ?) then (no)
-    : Check N+1 validity;
-    if (error ?) then (no)
-        : Save N+1 description;
-        if (error ?) then (no)
-            : Check Health service;
-            if (error ?) then (no)
-                : Download each images;
-                if (error ?) then (no)
-                    : Update app to N+1 (compose up);
-                    if (error ?) then (no)
-                        : Save app;
-                        : Twin update with new app id;
-                        : Remove descritpion N if necessary;
-                        stop
-                        note
-                        App is updated
-                        end note
-                    else (yes)
-                        : Remove app in version N+1 (compose down);
-                        : Reinstall app in version N (compose up);
-                        :🗲 update failed, no twin update;
-                        stop
-                    endif
-                else (yes)
-                    :🗲 update failed
-                    No twin update;
-                stop
-                endif
-            else (yes)
-                    :🗲 update failed
-                    No twin update;
-                stop
-            endif
-        else (yes)
-            :🗲 update failed
-            No twin update;
-            stop
-        endif
-    else (yes)
-        :🗲 update failed
-        No twin update;
+-> Twin update;
+:🗲 Update to N+1 in progress;
+
+if (AppN+1 already known ?) then (no)
+    :Download AppN+1 description;
+    if (Verify Health service) then (error)
+        :🗲 Update failed
+        No Twin update;
+        : Remove AppN+1 decription from device;
         stop
+    else (ok)
+        : Download AppN+1 images;
+        if(Downlaod error) then (yes)
+            :🗲 Update failed
+            No Twin update;
+            : Remove AppN+1 decription from device;
+            stop
+        else(no)
+        endif
     endif
-else (yes)
-    :🗲 update failed
-    No twin update;
+else(yes)
+endif
+: Update AppN to AppN+1;
+if(Update error ?) then (no)
+    :Put the application in its desired Status;
+    :Update reported twin.
+    instanceId is untouched
+    appId is set AppN+1;
+    stop
+    note
+        App is updated
+    end note
+else(yes)
+    :🗲 Update failed
+    No Twin update;
+    :Rollback to AppN;
     stop
 endif
+
 @enduml
