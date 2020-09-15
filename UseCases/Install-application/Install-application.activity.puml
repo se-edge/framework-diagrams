@@ -1,0 +1,52 @@
+@startuml
+legend top left
+🗲 is a system telemetry
+endlegend
+
+start
+-> Twin update;
+:🗲 Install in progress;
+
+if (app description already known) then (ko)
+    if (Download app description) then (ok)
+        if( Verify description) then (ok)
+            :Save description;
+        else(ko)
+            :🗲 Install failed
+            No twin update;
+            stop
+        endif
+    else (ko)
+        :🗲 Install failed
+        No twin update;
+        stop
+    endif
+else(ok)
+endif
+if ( verify health service ) then (ok)
+    if(download images) then (ok)
+        if( install application (create)) then (ok)
+            :Update reported twin -> stopped;
+            :Put the application in its desired Status (e.g running);
+            :Update reported twin -> starting;
+            :Update reported twin -> running;
+        else (ko)
+            :🗲 Install failed
+            No Twin update;
+            stop
+        endif
+        stop
+        note
+            App is installed
+        end note
+    else(ko)
+        :🗲 Install failed
+        No Twin update;
+        stop
+    endif
+else (ko)
+    :🗲 Install failed
+    No Twin update;
+    stop
+endif
+@enduml
