@@ -32,6 +32,7 @@ if ( verify health service ) then (ok)
             :Update reported twin -> running;
         else (ko)
             :🗲 Install failed
+            Remove descritpion and images
             No Twin update;
             stop
         endif
@@ -41,6 +42,7 @@ if ( verify health service ) then (ok)
         end note
     else(ko)
         :🗲 Install failed
+        Remove description
         No Twin update;
         stop
     endif
