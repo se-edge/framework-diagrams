@@ -16,10 +16,10 @@ if (AppN+1 already known ?) then (no)
         stop
     else (ok)
         : Download AppN+1 images;
-        if(Downlaod error) then (yes)
+        if(Download error) then (yes)
             :🗲 Update failed
             No Twin update;
-            : Remove AppN+1 decription from device;
+            : Remove AppN+1 description from device;
             stop
         else(no)
         endif
