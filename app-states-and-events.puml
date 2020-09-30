@@ -23,7 +23,7 @@ Stopped        --> Stopped    : twin update [desired state == running && compose
 Stopped        --> Removing   : twin update [app removed] /🗲uninstall in progress && compose down
 ' Not tested
 Starting                      : ↻ While probe container health is starting && container state is running
-Starting                      : Set twin stats to starting
+Starting                      : Set twin status to starting
 ' Tested (update testcase with check transient state starting)
 Starting       --> Running    : [probe container health == healthy]
 ' Tested (update testcase with check transient state starting)
