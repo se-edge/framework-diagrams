@@ -1,0 +1,59 @@
+@startuml
+start
+-> startup.sh;
+partition Bash {
+    if (MQTT broker configured?) then (No)
+        :Generate random password
+for EdgeManager;
+    else (Yes)
+    endif
+    :Start MQTT broker;
+    :Start socat for docker and
+DI proxy sockets;
+    :Start EdgeManager;
+}
+
+if (Container on ESX network?) then (No)
+    :Create and connect to ESX network;
+else (Yes)
+endif
+
+:Start HttpServer;
+note left: This is done first for to open configuration channel
+
+:Load last known apps states
+from database;
+note left: C++ AInstance objects are created here
+
+:Check proxy;
+note left: To be detailed
+
+:Try to set all apps in desired states;
+note left: Nothing is reported here up to first full twin received
+
+:Open communication channel
+(Start agent);
+
+partition Agent {
+    :Apply proxy if env variable existing;
+    if (ConnectionString in database?) then (No)
+        repeat
+            :Get currend docker image tag
+and compute bootstrap url;
+            :Bootstrap with genuineness cerificate;
+            backward :Wait //AgentRetryDelay//;
+        repeat while (Bootstrap success?) is (No) not (Yes)
+        :Save ConnectionString in database;
+    else (Yes)
+    endif
+    :Start EdgeAgent with ConnectionString;
+}
+
+:Connect to MQTT broker;
+note left: Using password generated in bash script part
+
+:Set healthstatus according to
+installed docker version and
+connection status to MQTT broker;
+
+@enduml
