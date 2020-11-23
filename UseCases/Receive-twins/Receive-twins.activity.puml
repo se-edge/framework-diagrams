@@ -1,0 +1,87 @@
+@startuml
+legend top left
+🗲 is a system telemetry
+endlegend
+
+start
+-> Receiveing twins;
+:Patch last known desired and reported;
+if (allready processing twin?) then (No)
+    repeat
+        if (Twin type) then (Full)
+            if (Twin contain software?) then (Yes)
+                :Manage software update;
+            else (No)
+            endif
+
+            if (Twin contain configuration?) then (Yes)
+                :Manage configuration;
+            else (No)
+            endif
+
+            while (Apps in twin?) is (Manage one app)
+                :Validate twin desired;
+                note left
+                Validate here to not block
+                auther apps and runtime twin management
+                end note
+
+                if (App is installed?) then (Yes)
+                    :Check app update;
+                    :Check app configuration;
+                else (No)
+                    :Install app;
+                    :Check app configuration;
+                endif
+            endwhile (No)
+
+            :Remove installed apps not in desired twin;
+
+            :Generate full reported runtime and applications;
+            :Diff last known reported and full genereated reported;
+            note left
+            Workaround PBI 56761:
+            Inject appId data to reported applications
+            end note
+            :🗲 Send reported patch;
+        else (Partial)
+            :Diff last processed desired and last known desired;
+            :Manage partial application twin if there is;
+            while (Apps in patch?) is (Manage one app)
+                if (Patch is null?) then (Yes)
+                    :Remove app;
+                else (No)
+                    :Apply patch of last known desired for this app;
+                    :Validate patched desired;
+                    note right
+                    Validate here to not block
+                    auther apps and runtime twin management
+                    end note
+
+                    if (App is installed?) then (Yes)
+                        :Check app update;
+                        :Check app configuration;
+                    else (No)
+                        :Install app;
+                        :Check app configuration;
+                    endif
+                endif
+            endwhile (No)
+
+            if (Patch contain runtime?) then (Yes)
+                if (Patch contain software and is not null?) then (Yes)
+                    :Manage software update;
+                else (No)
+                endif
+                if (Patch contain configuration?) then (Yes)
+                    :Manage configuration;
+                else (No)
+                endif
+            else (No)
+            endif
+        endif
+    repeat while (New twin to process?) is (Yes) not (No)
+endif
+stop
+
+@enduml
