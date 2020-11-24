@@ -1,0 +1,16 @@
+@startuml
+legend top left
+🗲 is a system telemetry
+endlegend
+start
+-> Twin update;
+:🗲 Uninstall in progress;
+:Uninstall application;
+note right: Docker-compose down -v ~--remove-orphans --rmi all
+:Remove instance from storage;
+:Update reported twin -> remove instance;
+:Remove description if not used
+by another instance;
+stop
+@enduml
+
