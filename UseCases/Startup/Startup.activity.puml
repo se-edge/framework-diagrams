@@ -35,7 +35,7 @@ note left: Nothing is reported here up to first full twin received
 (Start agent);
 
 partition Agent {
-    :Apply proxy if env variable existing;
+    :Apply proxy if needed;
     if (ConnectionString in database?) then (No)
         repeat
             :Get currend docker image tag
