@@ -46,7 +46,7 @@ if (allready processing twin?) then (No)
             :🗲 Send reported patch;
         else (Partial)
             :Diff last processed desired and last known desired;
-            :Manage partial application twin if there is;
+
             while (Apps in patch?) is (Manage one app)
                 if (Patch is null?) then (Yes)
                     :Remove app;
@@ -68,15 +68,12 @@ if (allready processing twin?) then (No)
                 endif
             endwhile (No)
 
-            if (Patch contain runtime?) then (Yes)
-                if (Patch contain software and is not null?) then (Yes)
-                    :Manage software update;
-                else (No)
-                endif
-                if (Patch contain configuration?) then (Yes)
-                    :Manage configuration;
-                else (No)
-                endif
+            if (Patch contain software and is not null?) then (Yes)
+                :Manage software update;
+            else (No)
+            endif
+            if (Patch contain configuration?) then (Yes)
+                :Manage configuration;
             else (No)
             endif
         endif
