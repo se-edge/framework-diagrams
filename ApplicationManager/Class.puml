@@ -2,46 +2,147 @@
 
 title "ApplicationManager"
 
+interface IStorage
+interface IEventBroker
+interface ISystemInfo {
+    getArch()
+}
+
+class InstanceFactory
+
 class ApplicationManager
-class EdgeApplication {
-    String name
-    String version
-    String appId
-    String instanceId
-    String serviceHealthCheck
-}
-class AppDescription {
-    String description
-    String appId
-}
-class ComposeApplication {
-    String projectName = instanceId
-}
-class ComposeService {
-    String name
-    String image
-}
-class DockerContainer {
-    String id
-    String name
-}
-class Volume {
-    String name
-    String target
+
+abstract class AInstance {
+    downloadImages()
+    updateApp()
+    verify()
+    up()
+    create()
+    uninstall()
+    stop()
+    updateDesiredStatus(DesiredStatus)
+    applyConfiguration(InstanceConfiguration)
 }
 
-class Status
-class DesiredStatus
+enum Status {
+    UNKNOWN
+    INSTALLING
+    STARTING
+    RESTARTING
+    RUNNING
+    STOPPED
+    UNHEALTHY
+}
 
-ApplicationManager *-- "*"EdgeApplication
-ApplicationManager *-- "*"AppDescription
-EdgeApplication *-- DesiredStatus
-EdgeApplication *-- ComposeApplication
-EdgeApplication *-- Status
-EdgeApplication o-- AppDescription
-ComposeApplication *-- "*" ComposeService
-ComposeService *-- "*" Volume
-ComposeService o-- DockerContainer
-ComposeService *-- Status
+enum DesiredStatus {
+    RUNNING
+    STOPPED
+}
+
+class InstanceMetaData {
+    instanceId
+    appId
+    appName
+    appVersion
+    healthCheck
+    InstanceType type
+}
+
+InstanceMetaData -- DesiredStatus : desiredStatus
+
+AInstance -- Status : currentStatus
+AInstance -- InstanceMetaData : data
+
+class DockerProxy {
+    checkDockerVersion()
+
+    startEventListening(container)
+    stopEventListening()
+    isEventListening()
+
+    getHealthStatus(container)
+    getContainerStatus(container)
+
+    copyToContainer(source, containerName, targetPath)
+
+    removeImages(images)
+
+    createUpdater(container, arg)
+    startUpdater()
+    stopUpdater()
+}
+
+ISystemInfo <|.. DockerProxy
+
+class DockerComposeProxy {
+    projectName
+    instanceId
+    appId
+
+    getVolumes()
+    getTargetVolumes(volume)
+    getContainerId(service)
+    getContainerName(service)
+    pullImages()
+    pullImages(appId)
+    getImages(appId)
+
+    changeAppId(appId)
+
+    up(appId)
+    start(appId)
+    stop(appId)
+    create(appId)
+    restart(appId)
+    down(appId)
+}
+
+enum EventAction {
+    START
+    STOP
+    UNINSTALL
+}
+
+
+DockerComposeProxy o-- DockerProxy
+note on link: To pull images
+
+DockerComposeProxy o-- IStorage
+note on link: To get description (compose file)
+
+class ComposeInstance {
+    projectName
+}
+
+AInstance <|-- ComposeInstance
+ComposeInstance *-- DockerComposeProxy
+ComposeInstance *-- DockerProxy
+
+
+ApplicationManager o-- IStorage
+ApplicationManager o-- IEventBroker
+ApplicationManager o-- InstanceFactory
+ApplicationManager *-- "0..*" AInstance
+
+class InstanceConfiguration {
+    packageId
+
+    download()
+    verify()
+    cleanTemp()
+}
+
+class ConfigurationFile {
+    id
+    url
+    signature
+    volume
+    target
+
+    download(path)
+    checkSignature(path)
+}
+
+InstanceConfiguration *-- "*" ConfigurationFile
 
 @enduml
