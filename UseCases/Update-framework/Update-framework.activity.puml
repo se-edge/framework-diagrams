@@ -1,13 +1,19 @@
 @startuml
 legend top left
-🗲 is a system telemetry
+🗲 is a system update triggered
 endlegend
 
 start
 -> Twin update;
 :🗲 Update framework in progress;
-:Pull EdgeUpdater image;
-:Run edgeupdater container;
+if (Pull EdgeUpdater image) then (fail)
+    :EdgeUpdateFailed;
+    stop
+endif
+if (Run edgeupdater container) then (fail)
+    :EdgeUpdateFailed;
+    stop
+endif
 
 partition EdgeUpdater {
     :Check edgemanager container exist
