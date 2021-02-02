@@ -6,17 +6,32 @@ endlegend
 start
 -> Twin update;
 :🗲 Update framework in progress;
+:Pull EdgeManager new image;
 :Pull EdgeUpdater image;
-:Run edgeUpdater container;
+:Run edgeupdater container;
 
 partition EdgeUpdater {
     :Check edgemanager container exist
     and new image present localy;
     :Remove oldedgemanager container if exist;
     :Stop edgemanager;
-    :Rename edgemanager to oldedgemanager;
-    :Remove oldedgemanager;
-    :Create edgemanager container with new image;
-    :Start edgemanager;
+    if (Rename edgemanager to oldedgemanager) then (fail)
+        :Start edgemanager;
+        stop
+    endif
+    if (Create edgemanager container with new image) then (fail)
+        :Rename oldegemanager to edgemanager;
+        :Start edgemanager;
+        stop
+    endif
+    if (Start edgemanager) then (fail)
+        :Remove edgemanager;
+        :Rename oldegemanager to edgemanager;
+        :Start edgemanager;
+        stop
+    endif
+    ->May need to check healthcheck of new edgemanager?;
+    :Remove oldedgemanager container;
+    stop
 }
 @enduml
