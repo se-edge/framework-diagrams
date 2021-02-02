@@ -6,7 +6,6 @@ endlegend
 start
 -> Twin update;
 :🗲 Update framework in progress;
-:Pull EdgeManager new image;
 :Pull EdgeUpdater image;
 :Run edgeupdater container;
 
