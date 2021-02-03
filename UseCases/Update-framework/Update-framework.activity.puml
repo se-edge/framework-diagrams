@@ -7,11 +7,11 @@ start
 -> Twin update;
 :🗲 Update framework in progress;
 if (Pull EdgeUpdater image) then (fail)
-    :EdgeUpdateFailed;
+    :Update Twin;
     stop
 endif
 if (Run edgeupdater container) then (fail)
-    :EdgeUpdateFailed;
+    :Update Twin;
     stop
 endif
 
