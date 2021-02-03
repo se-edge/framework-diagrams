@@ -1,6 +1,6 @@
 @startuml
 legend top left
-🗲 is a system update triggered
+🗲 is a system telemetry
 endlegend
 
 start
