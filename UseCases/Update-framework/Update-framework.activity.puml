@@ -29,13 +29,12 @@ partition EdgeUpdater {
         :Start edgemanager;
         stop
     endif
-    if (Start edgemanager) then (fail)
+    if (Start edgemanager (reach Healthy) then (fail)
         :Remove edgemanager;
         :Rename oldegemanager to edgemanager;
         :Start edgemanager;
         stop
     endif
-    ->May need to check healthcheck of new edgemanager?;
     :Remove oldedgemanager container;
     stop
 }
