@@ -28,10 +28,7 @@ partition EdgeUpdater {
     : Copy edgemanage.sqlite to edgemanager.sqlite.old;
     :Remove oldedgemanager container if exist;
     :Stop edgemanager;
-    if (Rename edgemanager to oldedgemanager) then (fail)
-        :Start edgemanager (with Json error);
-        stop
-    endif
+    :Rename edgemanager to oldedgemanager;
     if (Create edgemanager container with new image) then (fail)
         :Rename oldegemanager to edgemanager;
         :Start edgemanager (with Json error);
