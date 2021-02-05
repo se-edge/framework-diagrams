@@ -6,36 +6,44 @@ endlegend
 start
 -> Twin update;
 :🗲 Update framework in progress;
-if (Pull EdgeUpdater image) then (fail)
-    :Update Twin;
+if (Pull New EdgeManager image) then (fail)
+    :System telemetry;
     stop
 endif
-if (Run edgeupdater container) then (fail)
-    :Update Twin;
+: Remove all EdgeUpdater images;
+if (Pull EdgeUpdater image) then (fail)
+    :System telemetry;
+    stop
+endif
+: Close DB access;
+if (Run EdgeUpdater container) then (fail)
+    : Reopen DB access;
+    :System telemetry;
     stop
 endif
 
 partition EdgeUpdater {
-    :Check edgemanager container exist
+    :Check EdgeManager container exist
     and new image present localy;
+    : Copy edgemanage.sqlite to edgemanager.sqlite.old;
     :Remove oldedgemanager container if exist;
     :Stop edgemanager;
     if (Rename edgemanager to oldedgemanager) then (fail)
-        :Start edgemanager;
+        :Start edgemanager (with Json error);
         stop
     endif
     if (Create edgemanager container with new image) then (fail)
         :Rename oldegemanager to edgemanager;
-        :Start edgemanager;
+        :Start edgemanager (with Json error);
         stop
     endif
-    if (Start edgemanager (reach Healthy) then (fail)
+    if (Start edgemanager (reach Healthy)) then (fail)
         :Remove edgemanager;
         :Rename oldegemanager to edgemanager;
-        :Start edgemanager;
+        :Start edgemanager (with Json error);
         stop
     endif
-    :Remove oldedgemanager container;
+    :Remove oldedgemanager container and image;
     stop
 }
 @enduml
