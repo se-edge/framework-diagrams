@@ -33,12 +33,18 @@ if (Pull New EdgeManager image) then (ok)
                                             ' No error handling here, we are done, it's best effort mode
                                             :Restore DB;
                                             :Remove oldedgemanager container, DB backup & image;
-                                            :Restart Edge Manager with error as parameter;
-                                            end
-                                            note left
-                                            Update failed.
-                                            The Edge Manager will send [🗲 Framework update failed] after its restart.
-                                            end note
+                                            if(Restart Edge Manager with error as parameter) then (ok)
+                                                end
+                                                note left
+                                                Update failed.
+                                                The Edge Manager will send [🗲 Framework update failed] after its restart.
+                                                end note
+                                            else
+                                                end
+                                                note left
+                                                The device is bricked.
+                                                end note
+                                            endif
                                         else
                                             end
                                             note left
@@ -51,12 +57,18 @@ if (Pull New EdgeManager image) then (ok)
                                         ' No error handling here, we are done, it's best effort mode
                                         :Restore DB;
                                         :Remove oldedgemanager container, DB backup & image;
-                                        :Restart Edge Manager with error as parameter;
-                                        end
-                                        note left
-                                        Update failed.
-                                        The Edge Manager will send [🗲 Framework update failed] after its restart.
-                                        end note
+                                        if(Restart Edge Manager with error as parameter) then (ok)
+                                            end
+                                            note left
+                                            Update failed.
+                                            The Edge Manager will send [🗲 Framework update failed] after its restart.
+                                            end note
+                                        else
+                                            end
+                                            note left
+                                            The device is bricked.
+                                            end note
+                                        endif
                                     else
                                         end
                                         note left
@@ -69,12 +81,18 @@ if (Pull New EdgeManager image) then (ok)
                                     ' No error handling here, we are done, it's best effort mode
                                     :Restore DB;
                                     :Remove oldedgemanager container, DB backup & image;
-                                    :Restart Edge Manager with error as parameter;
-                                    end
-                                    note left
-                                    Update failed.
-                                    The Edge Manager will send [🗲 Framework update failed] after its restart.
-                                    end note
+                                    if(Restart Edge Manager with error as parameter) then (ok)
+                                        end
+                                        note left
+                                        Update failed.
+                                        The Edge Manager will send [🗲 Framework update failed] after its restart.
+                                        end note
+                                    else
+                                        end
+                                        note left
+                                        The device is bricked.
+                                        end note
+                                    endif
                                 else
                                     end
                                     note left
