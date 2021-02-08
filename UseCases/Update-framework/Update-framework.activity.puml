@@ -5,42 +5,107 @@ endlegend
 
 start
 -> Twin update;
-:🗲 Update framework in progress;
-if (Pull New EdgeManager image) then (fail)
-    :System telemetry;
-    stop
-endif
-: Remove all EdgeUpdater images;
-if (Pull EdgeUpdater image) then (fail)
-    :System telemetry;
-    stop
-endif
-: Close DB access;
-if (Run EdgeUpdater container) then (fail)
-    : Reopen DB access;
-    :System telemetry;
-    stop
-endif
-
-partition EdgeUpdater {
-    :Check EdgeManager container exist
-    and new image present localy;
-    : Copy edgemanage.sqlite to edgemanager.sqlite.old;
-    :Remove oldedgemanager container if exist;
-    :Stop edgemanager;
-    :Rename edgemanager to oldedgemanager;
-    if (Create edgemanager container with new image) then (fail)
-        :Rename oldegemanager to edgemanager;
-        :Start edgemanager (with Json error);
-        stop
+:🗲 Framework update in progress;
+if (Pull New EdgeManager image) then (ok)
+    ' If it fails we assume there is no edge updater on target
+    : Remove all EdgeUpdater images;
+    if (Pull EdgeUpdater image) then (ok)
+        if (Run EdgeUpdater image) then (ok)
+            partition EdgeUpdater {
+                ' Preflight checks
+                if (EdgeManager container exist and a new image is present localy) then (ok)
+                    :Stop edgemanager;
+                    if (Backup edgemanager database) then (ok)
+                        ' If this one fails we assume there is no EM already present
+                        :Remove oldedgemanager container if exists;
+                        if(Rename edgemanager container to oldedgemanager) then (ok)
+                            if (Create edgemanager container with the new image) then (ok)
+                                if (Start edgemanager) then (ok)
+                                    if(Edge Manager reaches healthy state) then (ok)
+                                        ' No error handling here, we are done, it's best effort mode
+                                        :Remove oldedgemanager container, DB backup & image;
+                                        stop
+                                        note left
+                                        The edge framework is up to date
+                                        end note
+                                    else
+                                        if(rename oldedgemanager container to edgemanager) then (ok)
+                                            ' No error handling here, we are done, it's best effort mode
+                                            :Restore DB;
+                                            :Remove oldedgemanager container, DB backup & image;
+                                            :Restart Edge Manager with error as parameter;
+                                            end
+                                            note left
+                                            Update failed.
+                                            The Edge Manager will send [🗲 Framework update failed] after its restart.
+                                            end note
+                                        else
+                                            end
+                                            note left
+                                            The device is bricked.
+                                            end note
+                                        endif
+                                    endif
+                                else
+                                    if(rename oldedgemanager container to edgemanager) then (ok)
+                                        ' No error handling here, we are done, it's best effort mode
+                                        :Restore DB;
+                                        :Remove oldedgemanager container, DB backup & image;
+                                        :Restart Edge Manager with error as parameter;
+                                        end
+                                        note left
+                                        Update failed.
+                                        The Edge Manager will send [🗲 Framework update failed] after its restart.
+                                        end note
+                                    else
+                                        end
+                                        note left
+                                        The device is bricked.
+                                        end note
+                                    endif
+                                endif
+                            else
+                                if(Rename oldedgemanager container to edgemanager) then (ok)
+                                    ' No error handling here, we are done, it's best effort mode
+                                    :Restore DB;
+                                    :Remove oldedgemanager container, DB backup & image;
+                                    :Restart Edge Manager with error as parameter;
+                                    end
+                                    note left
+                                    Update failed.
+                                    The Edge Manager will send [🗲 Framework update failed] after its restart.
+                                    end note
+                                else
+                                    end
+                                    note left
+                                    The device is bricked.
+                                    end note
+                                endif
+                            endif
+                        else
+                            :Restore DB;
+                            :Restart Edge Manager with error as parameter;
+                            end
+                        endif
+                    else
+                        :Restart Edge Manager with error as parameter;
+                        end
+                    endif
+                else
+                    :Restart Edge Manager with error as parameter;
+                    end
+                endif
+            }
+        else
+            :🗲 Framework update failed;
+            end
+        endif
+    else
+        :🗲 Framework update failed;
+        end
     endif
-    if (Start edgemanager (reach Healthy)) then (fail)
-        :Remove edgemanager;
-        :Rename oldegemanager to edgemanager;
-        :Start edgemanager (with Json error);
-        stop
-    endif
-    :Remove oldedgemanager container and image;
-    stop
-}
+else
+    :🗲 Framework update failed;
+    end
+endif
 @enduml
