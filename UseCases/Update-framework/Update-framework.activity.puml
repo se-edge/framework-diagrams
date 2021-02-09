@@ -7,6 +7,7 @@ start
 -> Twin update;
 :🗲 Framework update in progress;
 if (Pull New EdgeManager image) then (ok)
+    :Remove all EdgeUpdater images;
     if (Pull EdgeUpdater image) then (ok)
         if (Run EdgeUpdater image) then (ok)
             partition EdgeUpdater {
@@ -21,7 +22,9 @@ if (Pull New EdgeManager image) then (ok)
                                 if (Start edgemanager) then (ok)
                                     if(Edge Manager reaches healthy state) then (ok)
                                         ' No error handling here, we are done, it's best effort mode
-                                        :Remove oldedgemanager container, DB backup & image;
+                                        :Remove DB backup;
+                                        :Remove oldedgemanager container;
+                                        :Remove oldedgemanager image;
                                         stop
                                         note right
                                         The edge framework is up to date
@@ -30,7 +33,9 @@ if (Pull New EdgeManager image) then (ok)
                                         if(rename oldedgemanager container to edgemanager) then (ok)
                                             ' No error handling here, we are done, it's best effort mode
                                             :Restore DB;
-                                            :Remove oldedgemanager container, DB backup & image;
+                                            :Remove DB backup;
+                                            :Remove oldedgemanager container;
+                                            :Remove oldedgemanager image;
                                             if(Restart Edge Manager with error as parameter) then (ok)
                                                 end
                                                 note right
@@ -51,11 +56,13 @@ if (Pull New EdgeManager image) then (ok)
                                         endif
                                     endif
                                 else
-                                    if(rename oldedgemanager container to edgemanager) then (ok)
+                                    if(rename oldedgemanager container to edgemanager (swap them)) then (ok)
                                         ' No error handling here, we are done, it's best effort mode
                                         :Restore DB;
-                                        :Remove oldedgemanager container, DB backup & image;
-                                        if(Restart Edge Manager with error as parameter) then (ok)
+                                        :Remove DB backup;
+                                        :Remove oldedgemanager container;
+                                        :Remove oldedgemanager image;
+                                        if(Restart edgemanager with error as parameter) then (ok)
                                             end
                                             note right
                                             Update failed.
@@ -75,11 +82,13 @@ if (Pull New EdgeManager image) then (ok)
                                     endif
                                 endif
                             else
-                                if(Rename oldedgemanager container to edgemanager) then (ok)
+                                if(Rename oldedgemanager container to edgemanager (swap them)) then (ok)
                                     ' No error handling here, we are done, it's best effort mode
                                     :Restore DB;
-                                    :Remove oldedgemanager container, DB backup & image;
-                                    if(Restart Edge Manager with error as parameter) then (ok)
+                                    :Remove DB backup;
+                                    :Remove oldedgemanager container;
+                                    :Remove oldedgemanager image;
+                                    if(Restart edgemanager with error as parameter) then (ok)
                                         end
                                         note right
                                         Update failed.
@@ -99,9 +108,9 @@ if (Pull New EdgeManager image) then (ok)
                                 endif
                             endif
                         else
-                            :Restore DB;
-                            :Remove oldedgemanager container, DB backup & image;
-                            if(Restart Edge Manager with error as parameter) then (ok)
+                            :Remove DB backup;
+                            :Remove new Edge Manager image;
+                            if(Restart edgemanager with error as parameter) then (ok)
                                 end
                                 note right
                                 Update failed.
@@ -116,8 +125,7 @@ if (Pull New EdgeManager image) then (ok)
                         endif
                     else
                         :Remove new Edge Manager image;
-                        :Remove EdgeUpdater image;
-                        if(Restart Edge Manager with error as parameter) then (ok)
+                        if(Restart edgemanager with error as parameter) then (ok)
                             end
                             note right
                             Update failed.
@@ -132,8 +140,7 @@ if (Pull New EdgeManager image) then (ok)
                     endif
                 else
                     :Remove new Edge Manager image;
-                    :Remove EdgeUpdater image;
-                    if(Restart Edge Manager with error as parameter) then (ok)
+                    if(Restart edgemanager with error as parameter) then (ok)
                         end
                         note right
                         Update failed.
