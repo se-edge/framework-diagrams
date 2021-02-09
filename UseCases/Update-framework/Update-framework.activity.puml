@@ -7,8 +7,6 @@ start
 -> Twin update;
 :🗲 Framework update in progress;
 if (Pull New EdgeManager image) then (ok)
-    ' If it fails we assume there is no edge updater on target
-    : Remove all EdgeUpdater images;
     if (Pull EdgeUpdater image) then (ok)
         if (Run EdgeUpdater image) then (ok)
             partition EdgeUpdater {
@@ -102,6 +100,7 @@ if (Pull New EdgeManager image) then (ok)
                             endif
                         else
                             :Restore DB;
+                            :Remove oldedgemanager container, DB backup & image;
                             if(Restart Edge Manager with error as parameter) then (ok)
                                 end
                                 note right
@@ -116,6 +115,8 @@ if (Pull New EdgeManager image) then (ok)
                             endif
                         endif
                     else
+                        :Remove new Edge Manager image;
+                        :Remove EdgeUpdater image;
                         if(Restart Edge Manager with error as parameter) then (ok)
                             end
                             note right
@@ -130,6 +131,8 @@ if (Pull New EdgeManager image) then (ok)
                         endif
                     endif
                 else
+                    :Remove new Edge Manager image;
+                    :Remove EdgeUpdater image;
                     if(Restart Edge Manager with error as parameter) then (ok)
                         end
                         note right
@@ -145,10 +148,13 @@ if (Pull New EdgeManager image) then (ok)
                 endif
             }
         else
+            :Remove new Edge Manager image;
+            :Remove EdgeUpdater image;
             :🗲 Framework update failed;
             end
         endif
     else
+        :Remove new Edge Manager image;
         :🗲 Framework update failed;
         end
     endif
