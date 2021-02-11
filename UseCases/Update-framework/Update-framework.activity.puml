@@ -7,7 +7,7 @@ start
 -> Twin update;
 :🗲 Framework update in progress;
 if (Pull New EdgeManager image) then (ok)
-    :Remove all images named edgeupdater, whatever is the version/repo;
+    :Remove all images whose name ends in 'edgeupdater', whatever the version;
     if (Pull EdgeUpdater image) then (ok)
         if (Run EdgeUpdater image) then (ok)
             partition EdgeUpdater {
