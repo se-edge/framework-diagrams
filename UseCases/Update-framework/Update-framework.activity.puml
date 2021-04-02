@@ -12,7 +12,9 @@ if (Pull New EdgeManager image) then (ok)
         if (Run EdgeUpdater image) then (ok)
             partition EdgeUpdater {
                 ' Preflight checks
+                :Create health check file;
                 if (EdgeManager container exist and a new image is present localy) then (ok)
+                    :Touch health check file;
                     :Stop edgemanager;
                     if (Backup edgemanager database) then (ok)
                         ' If this one fails we assume there is no EM already present
@@ -139,6 +141,7 @@ if (Pull New EdgeManager image) then (ok)
                         endif
                     endif
                 else
+                    :Touch health check file;
                     :Remove new Edge Manager image;
                     if(Restart edgemanager with error as parameter) then (ok)
                         end
